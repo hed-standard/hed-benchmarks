@@ -43,6 +43,10 @@ CI runs ruff check, ruff format --check, typos, mdformat --check, the pytest sui
 - Benchmark timings are machine-dependent: never treat a number in an old report as a target, and never compare timings across machines.
 - Python code that writes text files must force LF: pass `newline="\n"` to `open()` / `Path.write_text()`. On Windows the platform default writes CRLF, which fights the repository's LF normalization.
 
+## Git flow
+
+Hosted at hed-standard; `origin` is the VisLab fork and `upstream` is hed-standard. Local `main` is a clean mirror of `upstream/main` - never commit or merge to it locally. All work goes on a branch based on `upstream/main`, pushed to the fork, and merged via a PR to hed-standard.
+
 ## Related repositories
 
 - `hed-python` - the hedtools library being benchmarked; the synthetic search benchmarks originated in its `benchmarks/` directory. Not vendored here; a session that needs it must be granted access to that checkout.
