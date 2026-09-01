@@ -770,7 +770,7 @@ def run_full_benchmark(quick=False, data_dir=None, results_dir=None, schema_vers
         "real_data": real_results,
     }
     out_path = out_dir / f"benchmark_{timestamp}.json"
-    out_path.write_text(json.dumps(output, indent=2, default=str), encoding="utf-8")
+    out_path.write_text(json.dumps(output, indent=2, default=str), encoding="utf-8", newline="\n")
     print(f"\nResults saved to {out_path}")
     return output
 

@@ -891,7 +891,7 @@ def generate_markdown_report(data, stem):
 
     # Write
     report_path = REPORTS_DIR / f"{stem}_report.md"
-    report_path.write_text("\n".join(lines), encoding="utf-8")
+    report_path.write_text("\n".join(lines), encoding="utf-8", newline="\n")
     print(f"  Saved {report_path}")
 
 

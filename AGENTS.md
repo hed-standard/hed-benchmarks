@@ -41,6 +41,7 @@ CI runs ruff check, ruff format --check, typos, mdformat --check, the pytest sui
 - Case-study scripts live in the case's `src/` and import their siblings by module name (for example `from data_generator import DataGenerator`) - do not "fix" this into package imports. They take `--data-dir` and `--results-dir` options and default to the case's `example/` directories, resolved relative to the script's own file.
 - Only the example results are committed (`example/test_data_results/` - the sample run on the small test data). Results for other datasets are written wherever `--results-dir` points and stay out of the repository.
 - Benchmark timings are machine-dependent: never treat a number in an old report as a target, and never compare timings across machines.
+- Python code that writes text files must force LF: pass `newline="\n"` to `open()` / `Path.write_text()`. On Windows the platform default writes CRLF, which fights the repository's LF normalization.
 
 ## Related repositories
 
