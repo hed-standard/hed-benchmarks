@@ -1,0 +1,16 @@
+# mdformat settings for this repo. They live here rather than as command-line
+# flags so a local run and CI cannot disagree because someone forgot one.
+#
+#   git ls-files -z '*.md' ':!use_cases/*/example/**' | xargs -0 python -m mdformat --check    to check
+#   git ls-files -z '*.md' ':!use_cases/*/example/**' | xargs -0 python -m mdformat            to fix
+#
+# The git ls-files form keeps mdformat off gitignored trees (.venv/, .status/);
+# the pathspec exclude skips the committed but machine-generated benchmark
+# reports under use_cases/*/example/.
+
+# wrap = "no" is the convention across the HED repositories: paragraphs are
+# single lines, so a one-word edit is a one-line diff. Changing this setting
+# reflows every markdown file in one diff, so do that alone.
+wrap = "no"
+number = true
+end_of_line = "lf"

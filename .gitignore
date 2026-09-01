@@ -1,3 +1,15 @@
+# Personal per-repo Claude Code notes (imports .status/local-environment.md)
+CLAUDE.local.md
+
+# Personal per-repo settings (absolute paths, claudeMdExcludes)
+.claude/settings.local.json
+
+# Working notes, plans, prompts, and decision records. Deliberately NOT
+# committed: this repo is public and .status/ holds half-formed thinking.
+# The consequence is that it lives on one machine only and is absent from
+# fresh clones and from `claude --worktree` worktrees.
+.status/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
