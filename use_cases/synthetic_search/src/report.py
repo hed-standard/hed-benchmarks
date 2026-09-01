@@ -401,7 +401,7 @@ def plot_query_complexity_heatmap(data, stem):
     ax.set_xticklabels(pivot_ms.columns, rotation=45, ha="right", fontsize=8)
     ax.set_yticks(range(len(pivot_ms.index)))
     ax.set_yticklabels(pivot_ms.index, fontsize=8)
-    ax.set_title(f"Query × Engine time (ms) — config: {config}")
+    ax.set_title(f"Query x Engine time (ms) - config: {config}")
     fig.colorbar(im, ax=ax, label="Time (ms)")
 
     # Annotate cells
@@ -463,7 +463,7 @@ def _pivot_to_md(pivot_ms, float_fmt=".3f"):
         label = str(idx) if not isinstance(idx, tuple) else " / ".join(str(x) for x in idx)
         cells = [label]
         for v in row:
-            cells.append(f"{v:{float_fmt}}" if pd.notna(v) else "—")
+            cells.append(f"{v:{float_fmt}}" if pd.notna(v) else "-")
         lines.append("| " + " | ".join(cells) + " |")
     return "\n".join(lines)
 
@@ -477,14 +477,14 @@ def _engine_summary_table(data):
         "| Schema required | No | Yes | Optional (via `schema_lookup`) |\n"
         "| Batch API | `find_matching(series, query)` | Manual loop | `string_search(strings, query)` |\n"
         "| Boolean AND | `word1, word2` | `term1 && term2` | same as Object search |\n"
-        "| Boolean OR | — | `term1 || term2` | same as Object search |\n"
+        "| Boolean OR | - | `term1 || term2` | same as Object search |\n"
         "| Negation | `~word` | `~term` | same as Object search |\n"
-        "| Exact group `{}` | — | `{term1, term2}` | same as Object search |\n"
-        "| Optional exact `{:}` | — | `{term1, term2:}` | same as Object search |\n"
-        "| Logical group `[]` | — | `[term1, term2]` | same as Object search |\n"
-        "| Wildcard `?/?? /???` | — | Yes | same as Object search |\n"
+        "| Exact group `{}` | - | `{term1, term2}` | same as Object search |\n"
+        "| Optional exact `{:}` | - | `{term1, term2:}` | same as Object search |\n"
+        "| Logical group `[]` | - | `[term1, term2]` | same as Object search |\n"
+        "| Wildcard `?/?? /???` | - | Yes | same as Object search |\n"
         "| Descendant wildcard | `*` suffix | `*` suffix | same as Object search |\n"
-        '| Quoted exact match | — | `"Exact-tag"` | same as Object search |\n'
+        '| Quoted exact match | - | `"Exact-tag"` | same as Object search |\n'
         "| Implementation | Regex on text | Recursive tree on parsed nodes | Recursive tree on StringNode |\n"
     )
 
@@ -529,14 +529,14 @@ def generate_markdown_report(data, stem):
     h2("Overview")
     p("This report compares the performance of the three HED string search engines provided by the `hedtools` package:")
     p(
-        "1. **basic_search** (`hed.models.basic_search.find_matching`) — regex-based pattern matching "
+        "1. **basic_search** (`hed.models.basic_search.find_matching`) - regex-based pattern matching "
         "that operates directly on a `pd.Series` of raw HED strings. No schema required. "
         "Supports simple boolean AND (`@`), negation (`~`), wildcards (`*`), and parenthesised groups.\n"
-        "2. **QueryHandler** (`hed.models.query_handler.QueryHandler`) — full expression-tree search "
+        "2. **QueryHandler** (`hed.models.query_handler.QueryHandler`) - full expression-tree search "
         "that operates on parsed `HedString` objects. Requires a loaded HED schema. "
         "Supports AND, OR, negation, exact groups `{}`, optional exact `{:}`, logical groups `[]`, "
         "wildcard child `?`/`??`/`???`, descendant wildcards, and quoted exact matches.\n"
-        "3. **String search** (`hed.models.string_search.StringQueryHandler`) — lightweight "
+        "3. **String search** (`hed.models.string_search.StringQueryHandler`) - lightweight "
         "tree-based search that operates on raw strings via `StringNode` duck-typing. Schema is "
         "optional (via `schema_lookup` dict for ancestor queries). Provides `string_search()` "
         "convenience function for a plain `list[str]`. Same query syntax as Object search."
@@ -551,31 +551,31 @@ def generate_markdown_report(data, stem):
     h2("Benchmark query suite")
     p(
         "All 18 operations below are used across the benchmarks. "
-        "The **single-string** and **series** benchmarks use the 12-query core set (✓); "
+        "The **single-string** and **series** benchmarks use the 12-query core set (the Core column); "
         "the **per-operation sweep** uses all 18 on a fixed structured string; "
-        "**nesting-depth sweeps** use the 5-query subset marked †."
+        "**nesting-depth sweeps** use the 5-query subset in the Depth column."
     )
     table(
         "| Category | Label | Object search / String search query | Basic search query | Core | Depth |\n"
         "| --- | --- | --- | --- | :---: | :---: |\n"
-        "| Simple | `bare_term` | `Event` | `@Event` | ✓ | † |\n"
-        '| Simple | `exact_quoted` | `"Event"` (quoted exact match) | — unsupported | ✓ | |\n'
-        "| Simple | `wildcard_prefix` | `Def/*` | `Def/*` | ✓ | |\n"
-        "| Boolean | `and_2` | `Event && Action` | `@Event, @Action` | ✓ | † |\n"
-        "| Boolean | `and_3` | `Event && Action && Agent` | `@Event, @Action, @Agent` | ✓ | |\n"
+        "| Simple | `bare_term` | `Event` | `@Event` | yes | yes |\n"
+        '| Simple | `exact_quoted` | `"Event"` (quoted exact match) | - unsupported | yes | |\n'
+        "| Simple | `wildcard_prefix` | `Def/*` | `Def/*` | yes | |\n"
+        "| Boolean | `and_2` | `Event && Action` | `@Event, @Action` | yes | yes |\n"
+        "| Boolean | `and_3` | `Event && Action && Agent` | `@Event, @Action, @Agent` | yes | |\n"
         "| Boolean | `deep_and_chain` | `Event && Action && Agent && Item && Red` | `@Event, @Action, @Agent, @Item, @Red` | | |\n"
-        "| Boolean | `or` | `Event \\|\\| Action` | — unsupported | ✓ | |\n"
-        "| Boolean | `negation` | `~Event` | `~Event` | ✓ | † |\n"
-        "| Boolean | `double_negation` | `~(~Event)` | — unsupported | | |\n"
-        "| Boolean | `nested_or_and` | `(Event \\|\\| Sensory-event) && (Action \\|\\| Agent)` | — unsupported | | |\n"
-        "| Group structural | `group_nesting` | `[Event && Action]` | `(Event, Action)` | ✓ | † |\n"
-        "| Group structural | `exact_group` | `{Event && Action}` | — unsupported | ✓ | † |\n"
-        "| Group structural | `exact_group_optional` | `{Event && Action: Agent}` | — unsupported | ✓ | |\n"
-        "| Group structural | `wildcard_?` | `{Event, ?}` | — unsupported | ✓ | |\n"
-        "| Group structural | `wildcard_??` | `{Event, ??}` | — unsupported | | |\n"
-        "| Group structural | `wildcard_???` | `{Event, ???}` | — unsupported | | |\n"
-        "| Complex | `descendant_nested` | `[Def && Onset]` | — unsupported | | |\n"
-        "| Complex | `complex_composite` | `{(Onset \\|\\| Offset), (Def \\|\\| {Def-expand}): ???}` | — unsupported | ✓ | |\n"
+        "| Boolean | `or` | `Event \\|\\| Action` | - unsupported | yes | |\n"
+        "| Boolean | `negation` | `~Event` | `~Event` | yes | yes |\n"
+        "| Boolean | `double_negation` | `~(~Event)` | - unsupported | | |\n"
+        "| Boolean | `nested_or_and` | `(Event \\|\\| Sensory-event) && (Action \\|\\| Agent)` | - unsupported | | |\n"
+        "| Group structural | `group_nesting` | `[Event && Action]` | `(Event, Action)` | yes | yes |\n"
+        "| Group structural | `exact_group` | `{Event && Action}` | - unsupported | yes | yes |\n"
+        "| Group structural | `exact_group_optional` | `{Event && Action: Agent}` | - unsupported | yes | |\n"
+        "| Group structural | `wildcard_?` | `{Event, ?}` | - unsupported | yes | |\n"
+        "| Group structural | `wildcard_??` | `{Event, ??}` | - unsupported | | |\n"
+        "| Group structural | `wildcard_???` | `{Event, ???}` | - unsupported | | |\n"
+        "| Complex | `descendant_nested` | `[Def && Onset]` | - unsupported | | |\n"
+        "| Complex | `complex_composite` | `{(Onset \\|\\| Offset), (Def \\|\\| {Def-expand}): ???}` | - unsupported | yes | |\n"
     )
 
     # ------------------------------------------------------------------
@@ -584,7 +584,7 @@ def generate_markdown_report(data, stem):
     h2("Key findings")
     findings = []
 
-    # Series speed — use series_size sweep so query and config are consistent;
+    # Series speed - use series_size sweep so query and config are consistent;
     # report ratio at the largest row count tested.
     series_recs = data.get("series", [])
     _sweep_recs = data.get("factor_sweeps", [])
@@ -599,7 +599,7 @@ def generate_markdown_report(data, stem):
             if not bs_row.empty and not qh_row.empty and bs_row.values[0] > 0:
                 ratio = qh_row.values[0] / bs_row.values[0]
                 findings.append(
-                    f"**Batch throughput:** Basic search is ~{ratio:.0f}× faster than "
+                    f"**Batch throughput:** Basic search is ~{ratio:.0f}x faster than "
                     f"Object search in a row-by-row loop at {max_level:,} rows, "
                     f"because it leverages vectorised pandas `str.contains` regex matching."
                 )
@@ -615,7 +615,7 @@ def generate_markdown_report(data, stem):
         if not bs_row.empty and not qh_row.empty and bs_row.values[0] > 0:
             ratio = qh_row.values[0] / bs_row.values[0]
             findings.append(
-                f"**Batch throughput:** Basic search is ~{ratio:.0f}× faster than "
+                f"**Batch throughput:** Basic search is ~{ratio:.0f}x faster than "
                 f"Object search in a row-by-row loop at {max_nrows:,} rows, "
                 f"because it leverages vectorised pandas `str.contains` regex matching."
             )
@@ -640,9 +640,11 @@ def generate_markdown_report(data, stem):
         swdf = pd.DataFrame(sweeps)
         lu = swdf[swdf["factor"] == "schema_lookup"]
         if not lu.empty:
-            with_lu = lu[lu["level"] == "with_lookup"]["time"].mean()
-            no_lu = lu[lu["level"] == "no_lookup"]["time"].mean()
-            if no_lu > 0:
+            # The schema_lookup sweep records the mode in "engine" ("With lookup" /
+            # "No lookup"); "level" holds the query label.
+            with_lu = lu[lu["engine"] == "With lookup"]["time"].mean()
+            no_lu = lu[lu["engine"] == "No lookup"]["time"].mean()
+            if pd.notna(with_lu) and pd.notna(no_lu) and no_lu > 0:
                 lu_pct = ((with_lu / no_lu) - 1) * 100
                 if abs(lu_pct) < 5:
                     findings.append(
@@ -670,7 +672,7 @@ def generate_markdown_report(data, stem):
                         ratio = t_last / t0
                         findings.append(
                             f"**Nesting depth ({eng}):** At depth {edf.iloc[-1]['level']}, "
-                            f"search time is ~{ratio:.1f}× the flat-string time."
+                            f"search time is ~{ratio:.1f}x the flat-string time."
                         )
 
     # basic_search operation limitations
@@ -710,7 +712,7 @@ def generate_markdown_report(data, stem):
         )
         table(_pivot_to_md(pivot))
 
-        img("Query × Engine heatmap", f"../figures/{stem}/benchmark_query_heatmap.png")
+        img("Query x Engine heatmap", f"../figures/{stem}/benchmark_query_heatmap.png")
 
     # ------------------------------------------------------------------
     # Series results
@@ -772,7 +774,7 @@ def generate_markdown_report(data, stem):
         "schema_lookup": (
             "The `schema_lookup` dict (produced by `generate_schema_lookup(schema)`) controls "
             "whether string search resolves parent-class queries. Without it, bare terms match "
-            "only exact tag names — `Event` does **not** match `Sensory-event`. With it, every "
+            "only exact tag names - `Event` does **not** match `Sensory-event`. With it, every "
             "tag carries its full ancestor path, so `Event` matches any descendant. "
             "The table shows timing (ms) and match count on a fixed short-form string "
             "containing known Event and Action descendants."
@@ -787,7 +789,7 @@ def generate_markdown_report(data, stem):
         ),
         "per_operation": (
             "Individual operation types tested in isolation. Shows which operations are "
-            "expensive for each engine. basic_search shows NaN/— for unsupported operations."
+            "expensive for each engine. basic_search shows NaN/- for unsupported operations."
         ),
     }
 
@@ -797,7 +799,7 @@ def generate_markdown_report(data, stem):
         if factor.startswith("deep_nest_") and factor not in factor_descriptions:
             query_type = factor.replace("deep_nest_", "").replace("_", " ")
             factor_descriptions[factor] = (
-                f"Deep nesting sweep for *{query_type}* queries at depths 1–20. "
+                f"Deep nesting sweep for *{query_type}* queries at depths 1-20. "
                 f"Shows how nesting interacts with specific query patterns."
             )
 
@@ -814,18 +816,20 @@ def generate_markdown_report(data, stem):
             # Build an expanded table showing both time (ms) and match count side by side.
             modes = ["No lookup", "With lookup"]
             headers = ["Query"] + [f"{m}: time (ms)" for m in modes] + [f"{m}: matches" for m in modes]
-            lines = ["| " + " | ".join(headers) + " |", "| " + " | ".join(["---"] * len(headers)) + " |"]
+            # Local table buffer - must NOT be named "lines", which is the
+            # report accumulator this whole function builds into.
+            tbl_lines = ["| " + " | ".join(headers) + " |", "| " + " | ".join(["---"] * len(headers)) + " |"]
             for ql in sub["level"].unique():
                 row_cells = [ql]
                 for m in modes:
                     r = sub[(sub["engine"] == m) & (sub["level"] == ql)]
-                    row_cells.append(f"{r['time'].values[0] * 1000:.3f}" if len(r) else "—")
+                    row_cells.append(f"{r['time'].values[0] * 1000:.3f}" if len(r) else "-")
                 for m in modes:
                     r = sub[(sub["engine"] == m) & (sub["level"] == ql)]
-                    mc = int(r["matches"].values[0]) if len(r) and "matches" in r.columns else "—"
+                    mc = int(r["matches"].values[0]) if len(r) and "matches" in r.columns else "-"
                     row_cells.append(str(mc))
-                lines.append("| " + " | ".join(row_cells) + " |")
-            table("\n".join(lines))
+                tbl_lines.append("| " + " | ".join(row_cells) + " |")
+            table("\n".join(tbl_lines))
             img("Schema lookup: timing and matching behaviour", f"../figures/{stem}/benchmark_schema_lookup.png")
         else:
             # Inline table for this factor
@@ -883,7 +887,7 @@ def generate_markdown_report(data, stem):
         f"- **Schema:** HED 8.4.0 loaded once and reused across all benchmarks.\n"
         f"- **Data generation:** Synthetic strings built from real schema tags with controlled "
         f"tag count, nesting depth, group count, and tag repetition.\n"
-        f"- **schema_lookup:** Generated via `generate_schema_lookup(schema)` — a dict mapping "
+        f"- **schema_lookup:** Generated via `generate_schema_lookup(schema)` - a dict mapping "
         f"each short tag to its ancestor tuple.\n"
         f"- **Environment:** Results depend on hardware; relative ratios between engines are "
         f"the meaningful comparison."
@@ -911,7 +915,7 @@ def main(path=None):
     print_real_data_summary(data)
 
     # Plots
-    print("\nGenerating plots…")
+    print("\nGenerating plots...")
     plot_factor_sweep(data, stem)
     plot_series_scaling(data, stem)
     plot_compile_vs_search(data, stem)
@@ -920,7 +924,7 @@ def main(path=None):
     plot_real_data(data, stem)
 
     # Markdown
-    print("\nGenerating Markdown report…")
+    print("\nGenerating Markdown report...")
     generate_markdown_report(data, stem)
 
     print("\nDone.")

@@ -62,7 +62,7 @@ def measure_memory(func):
 
 
 # ======================================================================
-# Query definitions  — (label, basic_search_query, qh_query)
+# Query definitions  - (label, basic_search_query, qh_query)
 #   basic_search_query = None means "not supported by basic_search"
 # ======================================================================
 
@@ -226,11 +226,11 @@ class SeriesBenchmark:
             series = self.gen.make_series(**cfg)
             cfg["label"] = label  # restore
 
-            # Use a subset of queries for series (too slow to run all × all)
+            # Use a subset of queries for series (too slow to run all x all)
             # For small series test all; for large ones test representative subset
             queries_to_test = QUERIES if n_rows <= 500 else QUERIES[:6]
             for q_label, bs_query, qh_query in queries_to_test:
-                print(f"  Series {label} | {q_label} ({n_rows} rows)…")
+                print(f"  Series {label} | {q_label} ({n_rows} rows)...")
 
                 # --- basic_search ---
                 if bs_query is not None:
@@ -348,7 +348,7 @@ class FactorSweep:
         return records
 
     def sweep_repeated_tags(self, repeat_counts=(0, 3, 5, 10, 20, 40)):
-        """Vary duplicate tag count — stresses basic_search cartesian product.
+        """Vary duplicate tag count - stresses basic_search cartesian product.
 
         Uses strings that actually contain 'Event' and 'Action' as the repeated
         tags so the group query ``(Event, Action)`` triggers combinatorial matching.
@@ -628,7 +628,7 @@ def run_full_benchmark(quick=False, data_dir=None, results_dir=None, schema_vers
     out_dir = out_dir / "output"
     out_dir.mkdir(parents=True, exist_ok=True)
 
-    print("Initialising DataGenerator (loading schema)…")
+    print("Initialising DataGenerator (loading schema)...")
     gen = DataGenerator(schema_version=schema_version, data_dir=data_dir)
 
     n_single = 10 if quick else 20

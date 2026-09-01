@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 // If it's the View/Blob link, hijack it
                 else if (href.includes("/blob/") || href.includes("/tree/")) {
                     // Change URL to repo root
-                    link.href = "https://github.com/hed-standard/hed-python";
+                    link.href = "https://github.com/hed-standard/hed-benchmarks";
                     link.title = "Go to repository";
                     link.setAttribute("aria-label", "Go to repository");
 

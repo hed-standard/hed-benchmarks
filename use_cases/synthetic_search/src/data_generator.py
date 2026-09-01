@@ -73,7 +73,7 @@ class DataGenerator:
             n_groups: Number of parenthesised groups to create.
             depth: Maximum nesting depth inside groups.
             repeats: Number of duplicate copies of the first tag to append.
-            form: 'short' | 'long' — tag form.
+            form: 'short' | 'long' - tag form.
 
         Returns:
             str: A raw HED string.
