@@ -1,0 +1,36 @@
+{% extends "!base.html" %}
+
+{%- block scripts %}
+  {{ super() }}
+
+  <!-- OSA Chat Widget (HED Assistant)
+       Privacy Note: This widget sends page content to an external AI service when
+       allowPageContext is enabled. The widget provides contextual help for HED benchmarks documentation.
+       Data sent: Page text content, user questions
+       Service: OSA Chat Widget (osa-demo.pages.dev)
+  -->
+  <script>
+    // Define config before the widget script loads
+    window.osaChatConfig = {
+      communityId: 'hed',
+      title: 'HED Assistant',
+      initialMessage: 'Questions about HED or the HED benchmarks? Ask me!',
+      placeholder: 'Questions about HED benchmarks?',
+      suggestedQuestions: [
+        'What benchmarks are available?',
+        'How do I run the synthetic search benchmark?',
+        'How do I add a new benchmark case study?',
+        'What is the standardized benchmark JSON format?'
+      ],
+      widgetInstructions: 'User is on the HED benchmarks documentation most likely looking for how to run or add benchmark case studies',
+      showExperimentalBadge: true,
+      allowPageContext: true,
+      pageContextDefaultEnabled: true
+    };
+  </script>
+  <script src="https://osa-demo.pages.dev/osa-chat-widget.js"
+    crossorigin="anonymous"
+    defer
+    onload="window.OSAChatWidget && window.OSAChatWidget.setConfig(window.osaChatConfig)">
+  </script>
+{%- endblock scripts %}
