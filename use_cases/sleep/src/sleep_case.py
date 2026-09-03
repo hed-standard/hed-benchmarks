@@ -351,7 +351,7 @@ def _write_json(path: Path, document: dict[str, object]) -> None:
     path.write_text(json.dumps(document, indent=2) + "\n", encoding="utf-8", newline="\n")
 
 
-def _timing_summary(function, runs: int) -> dict[str, float]:
+def _timing_summary(function, runs: int) -> dict[str, int | float]:
     function()
     values = [timeit.timeit(function, number=1) for _ in range(runs)]
     return {
@@ -394,7 +394,7 @@ def build_timing_document(data_dir: Path, schema_version: str, runs: int) -> dic
                 },
                 {
                     "query_id": case["id"],
-                    "engine": "Object search (parse and search)",
+                    "engine": "Object search (event parsing and search)",
                     **_timing_summary(
                         lambda current_handler=handler: [
                             current_handler.search(HedString(value, schema)) for value in series

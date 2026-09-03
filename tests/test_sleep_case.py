@@ -128,3 +128,14 @@ def test_fixture_validation_does_not_ignore_sidecar_warnings(tmp_path):
 def test_correctness_document_is_json_serializable():
     document = sleep_case.build_correctness_document(DATA_DIR)
     assert json.loads(json.dumps(document))["case_id"] == "sleep_annotation_source_search"
+
+
+def test_timing_contract_identifies_event_parsing():
+    document = sleep_case.build_timing_document(DATA_DIR, sleep_case.DEFAULT_SCHEMA_VERSION, runs=1)
+    engines = {record["engine"] for record in document["records"]}
+    assert engines == {
+        "Basic search",
+        "String search (lookup)",
+        "Object search (event parsing and search)",
+    }
+    assert all(type(record["runs"]) is int for record in document["records"])
