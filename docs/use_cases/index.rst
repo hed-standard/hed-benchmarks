@@ -9,6 +9,6 @@ when only its intent is settled.
    :maxdepth: 1
 
    Synthetic search (working) <synthetic_search>
-   Sleep staging (planned) <sleep>
+   Sleep annotation source search (working) <sleep>
    Language scoring (planned) <lang>
    Epilepsy scoring (planned) <score>
