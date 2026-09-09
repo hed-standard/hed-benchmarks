@@ -16,12 +16,12 @@ Benchmark case studies and shared benchmark tooling for HED (Hierarchical Event 
 
 ## Case studies
 
-| Case study                    | Status  | What it measures                                                                      |
-| ----------------------------- | ------- | ------------------------------------------------------------------------------------- |
-| `use_cases/synthetic_search/` | working | Performance of the three hedtools HED search engines on synthetic and real event data |
-| sleep staging                 | planned | Assessment of HED-annotated sleep data                                                |
-| language scoring (lang)       | planned | Language scoring benchmarks                                                           |
-| epilepsy scoring (score)      | planned | Epilepsy scoring benchmarks based on SCORE                                            |
+| Case study                    | Status  | What it measures                                                                        |
+| ----------------------------- | ------- | --------------------------------------------------------------------------------------- |
+| `use_cases/synthetic_search/` | working | Performance of the three hedtools HED search engines on synthetic and real event data   |
+| `use_cases/sleep/`            | working | Correctness of source-specific semantic retrieval from parallel sleep-stage annotations |
+| language scoring (lang)       | planned | Language scoring benchmarks                                                             |
+| epilepsy scoring (score)      | planned | Epilepsy scoring benchmarks based on SCORE                                              |
 
 Each case study directory has its own README and the same committed layout: `src/` (scripts), `example/` with a small vendored test dataset (`test_data/`) and the results of running the benchmark on it (`test_data_results/` with `output/`, `figures/`, `reports/`), and `json_specifications/` (the case's standardized JSON specs, placeholder until the format lands). The scripts take `--data-dir` and `--results-dir` options to run on other datasets, whose results normally stay outside the repository.
 
@@ -41,6 +41,8 @@ uv pip install -e ".[dev,test]"
 ```
 python use_cases/synthetic_search/src/search_benchmark.py --quick
 python use_cases/synthetic_search/src/report.py
+python use_cases/sleep/src/sleep_case.py
+python use_cases/sleep/src/report.py
 ```
 
 ## Development

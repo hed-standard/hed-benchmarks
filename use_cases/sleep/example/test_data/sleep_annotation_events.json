@@ -1,0 +1,67 @@
+{
+  "duration": {
+    "Description": "Duration of the scored interval.",
+    "Units": "s",
+    "HED": "Duration/# second"
+  },
+  "stage_hum": {
+    "LongName": "Human consensus sleep stage",
+    "Description": "Synthetic human consensus labels modeled on the CC0 BOAS annotation structure.",
+    "Levels": {
+      "0": "Wake",
+      "1": "Non-REM stage N1",
+      "2": "Non-REM stage N2",
+      "3": "Non-REM stage N3",
+      "4": "Rapid eye movement sleep",
+      "8": "Signal disconnection"
+    },
+    "HED": {
+      "0": "({duration}, (Data-feature, (Human-agent, ID/human-consensus), (Experiment-participant, Awake)))",
+      "1": "({duration}, (Data-feature, (Human-agent, ID/human-consensus), Sleep-stage-N1))",
+      "2": "({duration}, (Data-feature, (Human-agent, ID/human-consensus), Sleep-stage-N2))",
+      "3": "({duration}, (Data-feature, (Human-agent, ID/human-consensus), Sleep-stage-N3))",
+      "4": "({duration}, (Data-feature, (Human-agent, ID/human-consensus), Sleep-stage-REM))",
+      "8": "({duration}, (Data-feature, (Human-agent, ID/human-consensus), Property-not-possible-to-determine, Label/signal-disconnection))"
+    }
+  },
+  "stage_psg_ai": {
+    "LongName": "Automated PSG sleep stage",
+    "Description": "Synthetic automated labels from polysomnography signals.",
+    "Levels": {
+      "-2": "Artifact or missing data",
+      "0": "Wake",
+      "1": "Non-REM stage N1",
+      "2": "Non-REM stage N2",
+      "3": "Non-REM stage N3",
+      "4": "Rapid eye movement sleep"
+    },
+    "HED": {
+      "-2": "({duration}, (Data-feature, (Software-agent, ID/psg-ai), Property-not-possible-to-determine, Label/artifact-or-missing-data))",
+      "0": "({duration}, (Data-feature, (Software-agent, ID/psg-ai), (Experiment-participant, Awake)))",
+      "1": "({duration}, (Data-feature, (Software-agent, ID/psg-ai), Sleep-stage-N1))",
+      "2": "({duration}, (Data-feature, (Software-agent, ID/psg-ai), Sleep-stage-N2))",
+      "3": "({duration}, (Data-feature, (Software-agent, ID/psg-ai), Sleep-stage-N3))",
+      "4": "({duration}, (Data-feature, (Software-agent, ID/psg-ai), Sleep-stage-REM))"
+    }
+  },
+  "stage_headband_ai": {
+    "LongName": "Automated headband sleep stage",
+    "Description": "Synthetic automated labels from wearable EEG signals.",
+    "Levels": {
+      "-2": "Artifact or missing data",
+      "0": "Wake",
+      "1": "Non-REM stage N1",
+      "2": "Non-REM stage N2",
+      "3": "Non-REM stage N3",
+      "4": "Rapid eye movement sleep"
+    },
+    "HED": {
+      "-2": "({duration}, (Data-feature, (Software-agent, ID/headband-ai), Property-not-possible-to-determine, Label/artifact-or-missing-data))",
+      "0": "({duration}, (Data-feature, (Software-agent, ID/headband-ai), (Experiment-participant, Awake)))",
+      "1": "({duration}, (Data-feature, (Software-agent, ID/headband-ai), Sleep-stage-N1))",
+      "2": "({duration}, (Data-feature, (Software-agent, ID/headband-ai), Sleep-stage-N2))",
+      "3": "({duration}, (Data-feature, (Software-agent, ID/headband-ai), Sleep-stage-N3))",
+      "4": "({duration}, (Data-feature, (Software-agent, ID/headband-ai), Sleep-stage-REM))"
+    }
+  }
+}

@@ -1,0 +1,455 @@
+{
+  "case_id": "sleep_annotation_source_search",
+  "case_version": "0.1",
+  "purpose": "Verify source-specific semantic retrieval from parallel sleep-stage annotations.",
+  "schema_version": "score_2.1.0",
+  "fixture": {
+    "kind": "synthetic_cc0_boas_structure",
+    "fixture_license": "CC0-1.0",
+    "derivation": "Synthetic stage-code patterns modeled on the BOAS three-stream annotation structure.",
+    "source_dataset": {
+      "name": "The Bitbrain Open Access Sleep (BOAS) dataset",
+      "accession": "ds005555",
+      "version": "1.1.1",
+      "doi": "10.18112/openneuro.ds005555.v1.1.1",
+      "license": "CC0"
+    },
+    "rows": 14,
+    "events_file": "sleep_annotation_events.tsv",
+    "sidecar_file": "sleep_annotation_events.json",
+    "events_sha256": "1db68d1d21369c2081e8deca5300944c273aa4c90e6844427af1e3ec79e5bdf5",
+    "sidecar_sha256": "597bba3b7e0c72c3510af1624332152b71485141b35327cdbb5e00fc266b1393"
+  },
+  "queries": [
+    {
+      "id": "any_n2",
+      "question": "Which epochs contain an N2 annotation from any source?",
+      "source_scope": "any",
+      "basic_query": "Sleep-stage-N2",
+      "structured_query": "Sleep-stage-N2",
+      "expected": {
+        "count": 7,
+        "onsets_seconds": [
+          30,
+          60,
+          90,
+          120,
+          150,
+          180,
+          210
+        ]
+      },
+      "engines": [
+        {
+          "engine": "Basic search",
+          "count": 7,
+          "onsets_seconds": [
+            30,
+            60,
+            90,
+            120,
+            150,
+            180,
+            210
+          ],
+          "correct": true
+        },
+        {
+          "engine": "String search (lookup)",
+          "count": 7,
+          "onsets_seconds": [
+            30,
+            60,
+            90,
+            120,
+            150,
+            180,
+            210
+          ],
+          "correct": true
+        },
+        {
+          "engine": "Object search",
+          "count": 7,
+          "onsets_seconds": [
+            30,
+            60,
+            90,
+            120,
+            150,
+            180,
+            210
+          ],
+          "correct": true
+        }
+      ]
+    },
+    {
+      "id": "human_n2",
+      "question": "Which epochs did the human consensus label as N2?",
+      "source_scope": "human-consensus",
+      "basic_query": "(Data-feature, (Human-agent, ID/human-consensus), Sleep-stage-N2)",
+      "structured_query": "[Sleep-stage-N2 && ID/human-consensus]",
+      "expected": {
+        "count": 4,
+        "onsets_seconds": [
+          30,
+          120,
+          150,
+          210
+        ]
+      },
+      "engines": [
+        {
+          "engine": "Basic search",
+          "count": 4,
+          "onsets_seconds": [
+            30,
+            120,
+            150,
+            210
+          ],
+          "correct": true
+        },
+        {
+          "engine": "String search (lookup)",
+          "count": 4,
+          "onsets_seconds": [
+            30,
+            120,
+            150,
+            210
+          ],
+          "correct": true
+        },
+        {
+          "engine": "Object search",
+          "count": 4,
+          "onsets_seconds": [
+            30,
+            120,
+            150,
+            210
+          ],
+          "correct": true
+        }
+      ]
+    },
+    {
+      "id": "psg_ai_n2",
+      "question": "Which epochs did the PSG algorithm label as N2?",
+      "source_scope": "psg-ai",
+      "basic_query": "(Data-feature, (Software-agent, ID/psg-ai), Sleep-stage-N2)",
+      "structured_query": "[Sleep-stage-N2 && ID/psg-ai]",
+      "expected": {
+        "count": 4,
+        "onsets_seconds": [
+          60,
+          120,
+          180,
+          210
+        ]
+      },
+      "engines": [
+        {
+          "engine": "Basic search",
+          "count": 4,
+          "onsets_seconds": [
+            60,
+            120,
+            180,
+            210
+          ],
+          "correct": true
+        },
+        {
+          "engine": "String search (lookup)",
+          "count": 4,
+          "onsets_seconds": [
+            60,
+            120,
+            180,
+            210
+          ],
+          "correct": true
+        },
+        {
+          "engine": "Object search",
+          "count": 4,
+          "onsets_seconds": [
+            60,
+            120,
+            180,
+            210
+          ],
+          "correct": true
+        }
+      ]
+    },
+    {
+      "id": "headband_ai_n2",
+      "question": "Which epochs did the headband algorithm label as N2?",
+      "source_scope": "headband-ai",
+      "basic_query": "(Data-feature, (Software-agent, ID/headband-ai), Sleep-stage-N2)",
+      "structured_query": "[Sleep-stage-N2 && ID/headband-ai]",
+      "expected": {
+        "count": 4,
+        "onsets_seconds": [
+          90,
+          150,
+          180,
+          210
+        ]
+      },
+      "engines": [
+        {
+          "engine": "Basic search",
+          "count": 4,
+          "onsets_seconds": [
+            90,
+            150,
+            180,
+            210
+          ],
+          "correct": true
+        },
+        {
+          "engine": "String search (lookup)",
+          "count": 4,
+          "onsets_seconds": [
+            90,
+            150,
+            180,
+            210
+          ],
+          "correct": true
+        },
+        {
+          "engine": "Object search",
+          "count": 4,
+          "onsets_seconds": [
+            90,
+            150,
+            180,
+            210
+          ],
+          "correct": true
+        }
+      ]
+    },
+    {
+      "id": "any_unavailable",
+      "question": "Which epochs have an unavailable-data annotation from any source?",
+      "source_scope": "any",
+      "basic_query": "Property-not-possible-to-determine",
+      "structured_query": "Property-not-possible-to-determine",
+      "expected": {
+        "count": 5,
+        "onsets_seconds": [
+          240,
+          270,
+          300,
+          330,
+          360
+        ]
+      },
+      "engines": [
+        {
+          "engine": "Basic search",
+          "count": 5,
+          "onsets_seconds": [
+            240,
+            270,
+            300,
+            330,
+            360
+          ],
+          "correct": true
+        },
+        {
+          "engine": "String search (lookup)",
+          "count": 5,
+          "onsets_seconds": [
+            240,
+            270,
+            300,
+            330,
+            360
+          ],
+          "correct": true
+        },
+        {
+          "engine": "Object search",
+          "count": 5,
+          "onsets_seconds": [
+            240,
+            270,
+            300,
+            330,
+            360
+          ],
+          "correct": true
+        }
+      ]
+    },
+    {
+      "id": "human_unavailable",
+      "question": "Which epochs did the human consensus stream mark with an unavailable-data state?",
+      "source_scope": "human-consensus",
+      "basic_query": "(Data-feature, (Human-agent, ID/human-consensus), Property-not-possible-to-determine)",
+      "structured_query": "[Property-not-possible-to-determine && ID/human-consensus]",
+      "expected": {
+        "count": 3,
+        "onsets_seconds": [
+          240,
+          330,
+          360
+        ]
+      },
+      "engines": [
+        {
+          "engine": "Basic search",
+          "count": 3,
+          "onsets_seconds": [
+            240,
+            330,
+            360
+          ],
+          "correct": true
+        },
+        {
+          "engine": "String search (lookup)",
+          "count": 3,
+          "onsets_seconds": [
+            240,
+            330,
+            360
+          ],
+          "correct": true
+        },
+        {
+          "engine": "Object search",
+          "count": 3,
+          "onsets_seconds": [
+            240,
+            330,
+            360
+          ],
+          "correct": true
+        }
+      ]
+    },
+    {
+      "id": "psg_ai_unavailable",
+      "question": "Which epochs did the PSG algorithm mark with an unavailable-data state?",
+      "source_scope": "psg-ai",
+      "basic_query": "(Data-feature, (Software-agent, ID/psg-ai), Property-not-possible-to-determine)",
+      "structured_query": "[Property-not-possible-to-determine && ID/psg-ai]",
+      "expected": {
+        "count": 2,
+        "onsets_seconds": [
+          270,
+          330
+        ]
+      },
+      "engines": [
+        {
+          "engine": "Basic search",
+          "count": 2,
+          "onsets_seconds": [
+            270,
+            330
+          ],
+          "correct": true
+        },
+        {
+          "engine": "String search (lookup)",
+          "count": 2,
+          "onsets_seconds": [
+            270,
+            330
+          ],
+          "correct": true
+        },
+        {
+          "engine": "Object search",
+          "count": 2,
+          "onsets_seconds": [
+            270,
+            330
+          ],
+          "correct": true
+        }
+      ]
+    },
+    {
+      "id": "headband_ai_unavailable",
+      "question": "Which epochs did the headband algorithm mark with an unavailable-data state?",
+      "source_scope": "headband-ai",
+      "basic_query": "(Data-feature, (Software-agent, ID/headband-ai), Property-not-possible-to-determine)",
+      "structured_query": "[Property-not-possible-to-determine && ID/headband-ai]",
+      "expected": {
+        "count": 3,
+        "onsets_seconds": [
+          300,
+          330,
+          360
+        ]
+      },
+      "engines": [
+        {
+          "engine": "Basic search",
+          "count": 3,
+          "onsets_seconds": [
+            300,
+            330,
+            360
+          ],
+          "correct": true
+        },
+        {
+          "engine": "String search (lookup)",
+          "count": 3,
+          "onsets_seconds": [
+            300,
+            330,
+            360
+          ],
+          "correct": true
+        },
+        {
+          "engine": "Object search",
+          "count": 3,
+          "onsets_seconds": [
+            300,
+            330,
+            360
+          ],
+          "correct": true
+        }
+      ]
+    }
+  ],
+  "checks": {
+    "fixture_contract_valid": true,
+    "sidecar_and_table_validate": true,
+    "all_engines_match_direct_label_oracles": true,
+    "source_specific_oracles_are_distinct": true,
+    "broad_oracles_are_strict_supersets": true
+  },
+  "analysis_boundary": {
+    "hed_retrieval": [
+      "find annotations by semantic meaning",
+      "restrict matches to a named scorer or algorithm",
+      "return matching rows and onsets"
+    ],
+    "downstream_python": [
+      "align parallel annotation streams",
+      "calculate disagreement and agreement statistics",
+      "derive transition context and interval relations",
+      "interpret real sleep-science results"
+    ],
+    "ground_truth": "No annotation source is treated as ground truth."
+  },
+  "interpretation": "This synthetic regression fixture tests semantic search correctness. It does not estimate sleep-stage agreement, algorithm performance, or scientific effects in a population."
+}
