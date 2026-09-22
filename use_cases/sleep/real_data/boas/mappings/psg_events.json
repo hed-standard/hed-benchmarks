@@ -1,0 +1,56 @@
+{
+  "duration": {
+    "Description": "Duration of the scored interval.",
+    "Units": "s",
+    "HED": "Duration/# second"
+  },
+  "begsample": {
+    "Description": "Start of the epoch in samples; preserved from the BOAS export."
+  },
+  "endsample": {
+    "Description": "End of the epoch in samples; preserved from the BOAS export."
+  },
+  "offset": {
+    "Description": "FieldTrip export offset; the BOAS README states that it is always zero."
+  },
+  "stage_hum": {
+    "LongName": "Human PSG consensus sleep stage",
+    "Description": "Consensus label derived from the expert PSG scorers released with BOAS.",
+    "Levels": {
+      "0": "Wake",
+      "1": "Non-REM stage N1",
+      "2": "Non-REM stage N2",
+      "3": "Non-REM stage N3",
+      "4": "Rapid eye movement sleep",
+      "8": "PSG disconnection"
+    },
+    "HED": {
+      "0": "({duration}, (Data-feature, (Human-agent, ID/human-consensus), (Experiment-participant, Awake)))",
+      "1": "({duration}, (Data-feature, (Human-agent, ID/human-consensus), Sleep-stage-N1))",
+      "2": "({duration}, (Data-feature, (Human-agent, ID/human-consensus), Sleep-stage-N2))",
+      "3": "({duration}, (Data-feature, (Human-agent, ID/human-consensus), Sleep-stage-N3))",
+      "4": "({duration}, (Data-feature, (Human-agent, ID/human-consensus), Sleep-stage-REM))",
+      "8": "({duration}, (Data-feature, (Human-agent, ID/human-consensus), Property-not-possible-to-determine, Label/PSG-disconnection))"
+    }
+  },
+  "stage_ai": {
+    "LongName": "Automated PSG sleep stage",
+    "Description": "Sleep stage produced by the BOAS model from PSG signals.",
+    "Levels": {
+      "-2": "Artefact or missing data",
+      "0": "Wake",
+      "1": "Non-REM stage N1",
+      "2": "Non-REM stage N2",
+      "3": "Non-REM stage N3",
+      "4": "Rapid eye movement sleep"
+    },
+    "HED": {
+      "-2": "({duration}, (Data-feature, (Software-agent, ID/psg-ai), Property-not-possible-to-determine, Label/artefact-or-missing-data))",
+      "0": "({duration}, (Data-feature, (Software-agent, ID/psg-ai), (Experiment-participant, Awake)))",
+      "1": "({duration}, (Data-feature, (Software-agent, ID/psg-ai), Sleep-stage-N1))",
+      "2": "({duration}, (Data-feature, (Software-agent, ID/psg-ai), Sleep-stage-N2))",
+      "3": "({duration}, (Data-feature, (Software-agent, ID/psg-ai), Sleep-stage-N3))",
+      "4": "({duration}, (Data-feature, (Software-agent, ID/psg-ai), Sleep-stage-REM))"
+    }
+  }
+}

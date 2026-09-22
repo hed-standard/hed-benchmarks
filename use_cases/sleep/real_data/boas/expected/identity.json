@@ -1,0 +1,9 @@
+{
+  "dataset_description_sha256": "febb7845754508f05dc2e7124d750367eaf759a3c92a44ac8ed369b4181360a6",
+  "participants_sha256": "0591b6323bd101af1c6871053aea4351a6cdd12e08f2aeff9a084b4692a03110",
+  "event_manifest_sha256": "f594769550ef982e175cc742288c98d15d7408ab93f024b147cd375ca1a81b90",
+  "reviewed_source_revision": "0225bb258566172fa97a4f75dc2c2689243df2a2",
+  "recordings": 128,
+  "individuals": 100,
+  "kind": "reviewed BOAS v1.1.1 annotation snapshot"
+}

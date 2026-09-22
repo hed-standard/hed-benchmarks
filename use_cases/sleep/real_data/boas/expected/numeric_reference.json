@@ -1,0 +1,954 @@
+{
+  "bootstrap": {
+    "bit_generator": "PCG64",
+    "individuals": 100,
+    "observed_near_minus_stable": 0.2936303484412169,
+    "percentile_95_interval_linear": [
+      0.2779564866149834,
+      0.3093127631924713
+    ],
+    "samples_requested": 10000,
+    "samples_used": 10000,
+    "seed": 20260908,
+    "unit": "sorted pid-prefixed individual_id"
+  },
+  "by_context": {
+    "near": {
+      "any_disagreement": {
+        "denominator": 17373,
+        "numerator": 7399,
+        "rate": 0.42589075001439014
+      },
+      "human_headband_ai_disagreement": {
+        "denominator": 17373,
+        "numerator": 5790,
+        "rate": 0.33327577275082026
+      },
+      "human_psg_ai_disagreement": {
+        "denominator": 17373,
+        "numerator": 5467,
+        "rate": 0.31468370459909056
+      },
+      "psg_ai_headband_ai_disagreement": {
+        "denominator": 17373,
+        "numerator": 4301,
+        "rate": 0.24756806538882173
+      },
+      "valid_epochs": 17373
+    },
+    "one_sided_near": {
+      "any_disagreement": {
+        "denominator": 31,
+        "numerator": 8,
+        "rate": 0.25806451612903225
+      },
+      "human_headband_ai_disagreement": {
+        "denominator": 31,
+        "numerator": 7,
+        "rate": 0.22580645161290322
+      },
+      "human_psg_ai_disagreement": {
+        "denominator": 31,
+        "numerator": 5,
+        "rate": 0.16129032258064516
+      },
+      "psg_ai_headband_ai_disagreement": {
+        "denominator": 31,
+        "numerator": 6,
+        "rate": 0.1935483870967742
+      },
+      "valid_epochs": 31
+    },
+    "stable": {
+      "any_disagreement": {
+        "denominator": 96620,
+        "numerator": 12779,
+        "rate": 0.13226040157317326
+      },
+      "human_headband_ai_disagreement": {
+        "denominator": 96620,
+        "numerator": 9354,
+        "rate": 0.09681225419167874
+      },
+      "human_psg_ai_disagreement": {
+        "denominator": 96620,
+        "numerator": 9077,
+        "rate": 0.0939453529290002
+      },
+      "psg_ai_headband_ai_disagreement": {
+        "denominator": 96620,
+        "numerator": 8042,
+        "rate": 0.08323328503415442
+      },
+      "valid_epochs": 96620
+    },
+    "unavailable": {
+      "any_disagreement": {
+        "denominator": 554,
+        "numerator": 54,
+        "rate": 0.09747292418772563
+      },
+      "human_headband_ai_disagreement": {
+        "denominator": 554,
+        "numerator": 36,
+        "rate": 0.06498194945848375
+      },
+      "human_psg_ai_disagreement": {
+        "denominator": 554,
+        "numerator": 40,
+        "rate": 0.07220216606498195
+      },
+      "psg_ai_headband_ai_disagreement": {
+        "denominator": 554,
+        "numerator": 36,
+        "rate": 0.06498194945848375
+      },
+      "valid_epochs": 554
+    }
+  },
+  "by_context_and_transition_type": {
+    "near:n2_n3": {
+      "any_disagreement": {
+        "denominator": 2934,
+        "numerator": 1306,
+        "rate": 0.4451261077027948
+      },
+      "human_headband_ai_disagreement": {
+        "denominator": 2934,
+        "numerator": 997,
+        "rate": 0.3398091342876619
+      },
+      "human_psg_ai_disagreement": {
+        "denominator": 2934,
+        "numerator": 1003,
+        "rate": 0.34185412406271304
+      },
+      "psg_ai_headband_ai_disagreement": {
+        "denominator": 2934,
+        "numerator": 618,
+        "rate": 0.21063394683026584
+      },
+      "valid_epochs": 2934
+    },
+    "near:other_transition": {
+      "any_disagreement": {
+        "denominator": 14439,
+        "numerator": 6093,
+        "rate": 0.42198213172657384
+      },
+      "human_headband_ai_disagreement": {
+        "denominator": 14439,
+        "numerator": 4793,
+        "rate": 0.33194819585843893
+      },
+      "human_psg_ai_disagreement": {
+        "denominator": 14439,
+        "numerator": 4464,
+        "rate": 0.30916268439642636
+      },
+      "psg_ai_headband_ai_disagreement": {
+        "denominator": 14439,
+        "numerator": 3683,
+        "rate": 0.2550730660018007
+      },
+      "valid_epochs": 14439
+    },
+    "one_sided_near:n2_n3": {
+      "any_disagreement": {
+        "denominator": 4,
+        "numerator": 2,
+        "rate": 0.5
+      },
+      "human_headband_ai_disagreement": {
+        "denominator": 4,
+        "numerator": 1,
+        "rate": 0.25
+      },
+      "human_psg_ai_disagreement": {
+        "denominator": 4,
+        "numerator": 2,
+        "rate": 0.5
+      },
+      "psg_ai_headband_ai_disagreement": {
+        "denominator": 4,
+        "numerator": 2,
+        "rate": 0.5
+      },
+      "valid_epochs": 4
+    },
+    "one_sided_near:other_transition": {
+      "any_disagreement": {
+        "denominator": 27,
+        "numerator": 6,
+        "rate": 0.2222222222222222
+      },
+      "human_headband_ai_disagreement": {
+        "denominator": 27,
+        "numerator": 6,
+        "rate": 0.2222222222222222
+      },
+      "human_psg_ai_disagreement": {
+        "denominator": 27,
+        "numerator": 3,
+        "rate": 0.1111111111111111
+      },
+      "psg_ai_headband_ai_disagreement": {
+        "denominator": 27,
+        "numerator": 4,
+        "rate": 0.14814814814814814
+      },
+      "valid_epochs": 27
+    },
+    "stable:stable": {
+      "any_disagreement": {
+        "denominator": 96620,
+        "numerator": 12779,
+        "rate": 0.13226040157317326
+      },
+      "human_headband_ai_disagreement": {
+        "denominator": 96620,
+        "numerator": 9354,
+        "rate": 0.09681225419167874
+      },
+      "human_psg_ai_disagreement": {
+        "denominator": 96620,
+        "numerator": 9077,
+        "rate": 0.0939453529290002
+      },
+      "psg_ai_headband_ai_disagreement": {
+        "denominator": 96620,
+        "numerator": 8042,
+        "rate": 0.08323328503415442
+      },
+      "valid_epochs": 96620
+    },
+    "unavailable:unavailable": {
+      "any_disagreement": {
+        "denominator": 554,
+        "numerator": 54,
+        "rate": 0.09747292418772563
+      },
+      "human_headband_ai_disagreement": {
+        "denominator": 554,
+        "numerator": 36,
+        "rate": 0.06498194945848375
+      },
+      "human_psg_ai_disagreement": {
+        "denominator": 554,
+        "numerator": 40,
+        "rate": 0.07220216606498195
+      },
+      "psg_ai_headband_ai_disagreement": {
+        "denominator": 554,
+        "numerator": 36,
+        "rate": 0.06498194945848375
+      },
+      "valid_epochs": 554
+    }
+  },
+  "by_human_stage": {
+    "n1": {
+      "contexts": {
+        "near": {
+          "any_disagreement": {
+            "denominator": 2727,
+            "numerator": 2258,
+            "rate": 0.828016134946828
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 2727,
+            "numerator": 1949,
+            "rate": 0.7147048038137147
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 2727,
+            "numerator": 1751,
+            "rate": 0.6420975430876421
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 2727,
+            "numerator": 1196,
+            "rate": 0.4385771910524386
+          },
+          "valid_epochs": 2727
+        },
+        "one_sided_near": {
+          "any_disagreement": {
+            "denominator": 2,
+            "numerator": 2,
+            "rate": 1.0
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 2,
+            "numerator": 2,
+            "rate": 1.0
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 2,
+            "numerator": 1,
+            "rate": 0.5
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 2,
+            "numerator": 1,
+            "rate": 0.5
+          },
+          "valid_epochs": 2
+        },
+        "stable": {
+          "any_disagreement": {
+            "denominator": 1568,
+            "numerator": 1366,
+            "rate": 0.8711734693877551
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 1568,
+            "numerator": 1236,
+            "rate": 0.7882653061224489
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 1568,
+            "numerator": 1144,
+            "rate": 0.7295918367346939
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 1568,
+            "numerator": 645,
+            "rate": 0.41135204081632654
+          },
+          "valid_epochs": 1568
+        },
+        "unavailable": {
+          "any_disagreement": {
+            "denominator": 2,
+            "numerator": 2,
+            "rate": 1.0
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 2,
+            "numerator": 2,
+            "rate": 1.0
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 2,
+            "numerator": 2,
+            "rate": 1.0
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 2,
+            "numerator": 1,
+            "rate": 0.5
+          },
+          "valid_epochs": 2
+        }
+      },
+      "valid_epochs": 4299
+    },
+    "n2": {
+      "contexts": {
+        "near": {
+          "any_disagreement": {
+            "denominator": 8572,
+            "numerator": 2478,
+            "rate": 0.2890807279514699
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 8572,
+            "numerator": 1741,
+            "rate": 0.2031031264582361
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 8572,
+            "numerator": 1910,
+            "rate": 0.22281847876808214
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 8572,
+            "numerator": 1473,
+            "rate": 0.1718385440970602
+          },
+          "valid_epochs": 8572
+        },
+        "one_sided_near": {
+          "any_disagreement": {
+            "denominator": 6,
+            "numerator": 1,
+            "rate": 0.16666666666666666
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 6,
+            "numerator": 0,
+            "rate": 0.0
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 6,
+            "numerator": 1,
+            "rate": 0.16666666666666666
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 6,
+            "numerator": 1,
+            "rate": 0.16666666666666666
+          },
+          "valid_epochs": 6
+        },
+        "stable": {
+          "any_disagreement": {
+            "denominator": 60632,
+            "numerator": 5190,
+            "rate": 0.08559836390025069
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 60632,
+            "numerator": 3675,
+            "rate": 0.06061155825306769
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 60632,
+            "numerator": 3872,
+            "rate": 0.06386066763425254
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 60632,
+            "numerator": 3174,
+            "rate": 0.05234859480142499
+          },
+          "valid_epochs": 60632
+        },
+        "unavailable": {
+          "any_disagreement": {
+            "denominator": 68,
+            "numerator": 24,
+            "rate": 0.35294117647058826
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 68,
+            "numerator": 13,
+            "rate": 0.19117647058823528
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 68,
+            "numerator": 22,
+            "rate": 0.3235294117647059
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 68,
+            "numerator": 16,
+            "rate": 0.23529411764705882
+          },
+          "valid_epochs": 68
+        }
+      },
+      "valid_epochs": 69278
+    },
+    "n3": {
+      "contexts": {
+        "near": {
+          "any_disagreement": {
+            "denominator": 1161,
+            "numerator": 646,
+            "rate": 0.5564168819982773
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 1161,
+            "numerator": 573,
+            "rate": 0.4935400516795866
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 1161,
+            "numerator": 441,
+            "rate": 0.3798449612403101
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 1161,
+            "numerator": 281,
+            "rate": 0.24203273040482343
+          },
+          "valid_epochs": 1161
+        },
+        "one_sided_near": {
+          "any_disagreement": {
+            "denominator": 1,
+            "numerator": 0,
+            "rate": 0.0
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 1,
+            "numerator": 0,
+            "rate": 0.0
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 1,
+            "numerator": 0,
+            "rate": 0.0
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 1,
+            "numerator": 0,
+            "rate": 0.0
+          },
+          "valid_epochs": 1
+        },
+        "stable": {
+          "any_disagreement": {
+            "denominator": 3644,
+            "numerator": 1618,
+            "rate": 0.44401756311745333
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 3644,
+            "numerator": 1432,
+            "rate": 0.3929747530186608
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 3644,
+            "numerator": 1048,
+            "rate": 0.287596048298573
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 3644,
+            "numerator": 771,
+            "rate": 0.21158068057080132
+          },
+          "valid_epochs": 3644
+        },
+        "unavailable": {
+          "any_disagreement": {
+            "denominator": 4,
+            "numerator": 0,
+            "rate": 0.0
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 4,
+            "numerator": 0,
+            "rate": 0.0
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 4,
+            "numerator": 0,
+            "rate": 0.0
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 4,
+            "numerator": 0,
+            "rate": 0.0
+          },
+          "valid_epochs": 4
+        }
+      },
+      "valid_epochs": 4810
+    },
+    "rem": {
+      "contexts": {
+        "near": {
+          "any_disagreement": {
+            "denominator": 1797,
+            "numerator": 662,
+            "rate": 0.36839176405119645
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 1797,
+            "numerator": 475,
+            "rate": 0.2643294379521425
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 1797,
+            "numerator": 485,
+            "rate": 0.26989426822481916
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 1797,
+            "numerator": 410,
+            "rate": 0.22815804117974403
+          },
+          "valid_epochs": 1797
+        },
+        "one_sided_near": {
+          "any_disagreement": {
+            "denominator": 2,
+            "numerator": 2,
+            "rate": 1.0
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 2,
+            "numerator": 2,
+            "rate": 1.0
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 2,
+            "numerator": 2,
+            "rate": 1.0
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 2,
+            "numerator": 1,
+            "rate": 0.5
+          },
+          "valid_epochs": 2
+        },
+        "stable": {
+          "any_disagreement": {
+            "denominator": 16252,
+            "numerator": 2711,
+            "rate": 0.1668102387398474
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 16252,
+            "numerator": 1866,
+            "rate": 0.11481663795225203
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 16252,
+            "numerator": 1745,
+            "rate": 0.1073714004430224
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 16252,
+            "numerator": 1927,
+            "rate": 0.11857002215111986
+          },
+          "valid_epochs": 16252
+        },
+        "unavailable": {
+          "any_disagreement": {
+            "denominator": 25,
+            "numerator": 8,
+            "rate": 0.32
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 25,
+            "numerator": 7,
+            "rate": 0.28
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 25,
+            "numerator": 5,
+            "rate": 0.2
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 25,
+            "numerator": 4,
+            "rate": 0.16
+          },
+          "valid_epochs": 25
+        }
+      },
+      "valid_epochs": 18076
+    },
+    "wake": {
+      "contexts": {
+        "near": {
+          "any_disagreement": {
+            "denominator": 3116,
+            "numerator": 1355,
+            "rate": 0.43485237483953787
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 3116,
+            "numerator": 1052,
+            "rate": 0.337612323491656
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 3116,
+            "numerator": 880,
+            "rate": 0.28241335044929394
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 3116,
+            "numerator": 941,
+            "rate": 0.30198973042362004
+          },
+          "valid_epochs": 3116
+        },
+        "one_sided_near": {
+          "any_disagreement": {
+            "denominator": 20,
+            "numerator": 3,
+            "rate": 0.15
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 20,
+            "numerator": 3,
+            "rate": 0.15
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 20,
+            "numerator": 1,
+            "rate": 0.05
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 20,
+            "numerator": 3,
+            "rate": 0.15
+          },
+          "valid_epochs": 20
+        },
+        "stable": {
+          "any_disagreement": {
+            "denominator": 14524,
+            "numerator": 1894,
+            "rate": 0.1304048471495456
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 14524,
+            "numerator": 1145,
+            "rate": 0.07883503167171578
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 14524,
+            "numerator": 1268,
+            "rate": 0.08730377306527128
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 14524,
+            "numerator": 1525,
+            "rate": 0.1049986229688791
+          },
+          "valid_epochs": 14524
+        },
+        "unavailable": {
+          "any_disagreement": {
+            "denominator": 455,
+            "numerator": 20,
+            "rate": 0.04395604395604396
+          },
+          "human_headband_ai_disagreement": {
+            "denominator": 455,
+            "numerator": 14,
+            "rate": 0.03076923076923077
+          },
+          "human_psg_ai_disagreement": {
+            "denominator": 455,
+            "numerator": 11,
+            "rate": 0.024175824175824177
+          },
+          "psg_ai_headband_ai_disagreement": {
+            "denominator": 455,
+            "numerator": 15,
+            "rate": 0.03296703296703297
+          },
+          "valid_epochs": 455
+        }
+      },
+      "valid_epochs": 18115
+    }
+  },
+  "by_transition_type": {
+    "n2_n3": {
+      "any_disagreement": {
+        "denominator": 2938,
+        "numerator": 1308,
+        "rate": 0.4452008168822328
+      },
+      "human_headband_ai_disagreement": {
+        "denominator": 2938,
+        "numerator": 998,
+        "rate": 0.33968686181075564
+      },
+      "human_psg_ai_disagreement": {
+        "denominator": 2938,
+        "numerator": 1005,
+        "rate": 0.342069434989789
+      },
+      "psg_ai_headband_ai_disagreement": {
+        "denominator": 2938,
+        "numerator": 620,
+        "rate": 0.21102791014295438
+      },
+      "valid_epochs": 2938
+    },
+    "other_transition": {
+      "any_disagreement": {
+        "denominator": 14466,
+        "numerator": 6099,
+        "rate": 0.42160929075072584
+      },
+      "human_headband_ai_disagreement": {
+        "denominator": 14466,
+        "numerator": 4799,
+        "rate": 0.3317433983132863
+      },
+      "human_psg_ai_disagreement": {
+        "denominator": 14466,
+        "numerator": 4467,
+        "rate": 0.3087930319369556
+      },
+      "psg_ai_headband_ai_disagreement": {
+        "denominator": 14466,
+        "numerator": 3687,
+        "rate": 0.2548734964744919
+      },
+      "valid_epochs": 14466
+    },
+    "stable": {
+      "any_disagreement": {
+        "denominator": 96620,
+        "numerator": 12779,
+        "rate": 0.13226040157317326
+      },
+      "human_headband_ai_disagreement": {
+        "denominator": 96620,
+        "numerator": 9354,
+        "rate": 0.09681225419167874
+      },
+      "human_psg_ai_disagreement": {
+        "denominator": 96620,
+        "numerator": 9077,
+        "rate": 0.0939453529290002
+      },
+      "psg_ai_headband_ai_disagreement": {
+        "denominator": 96620,
+        "numerator": 8042,
+        "rate": 0.08323328503415442
+      },
+      "valid_epochs": 96620
+    },
+    "unavailable": {
+      "any_disagreement": {
+        "denominator": 554,
+        "numerator": 54,
+        "rate": 0.09747292418772563
+      },
+      "human_headband_ai_disagreement": {
+        "denominator": 554,
+        "numerator": 36,
+        "rate": 0.06498194945848375
+      },
+      "human_psg_ai_disagreement": {
+        "denominator": 554,
+        "numerator": 40,
+        "rate": 0.07220216606498195
+      },
+      "psg_ai_headband_ai_disagreement": {
+        "denominator": 554,
+        "numerator": 36,
+        "rate": 0.06498194945848375
+      },
+      "valid_epochs": 554
+    }
+  },
+  "dataset": {
+    "dataset_description_sha256": "febb7845754508f05dc2e7124d750367eaf759a3c92a44ac8ed369b4181360a6",
+    "doi": "doi:10.18112/openneuro.ds005555.v1.1.1",
+    "event_files": 256,
+    "event_manifest_sha256": "f594769550ef982e175cc742288c98d15d7408ab93f024b147cd375ca1a81b90",
+    "individuals": 100,
+    "license": "CC0",
+    "name": "The Bitbrain Open Access Sleep (BOAS) dataset",
+    "participants_sha256": "0591b6323bd101af1c6871053aea4351a6cdd12e08f2aeff9a084b4692a03110",
+    "recordings": 128
+  },
+  "definitions": {
+    "one_sided_near": "only one external flank observable and contiguous; that flank changes; sensitivity only",
+    "strict_near": "both external flanks observable and contiguous through i; at least one flank changes",
+    "strict_stable": "both external flanks observable and contiguous through i; neither flank changes",
+    "transition_type": "n2_n3 if either observed changing flank is n2|n3; otherwise other_transition",
+    "unavailable": "remaining incomplete external context",
+    "valid": "exact alignment and all three focal labels in integer codes 0..4"
+  },
+  "n1_strict_vs_legacy": {
+    "legacy_context": {
+      "near": {
+        "denominator": 2729,
+        "numerator": 2260,
+        "rate": 0.828142176621473
+      },
+      "near_minus_stable": -0.04303129276628204,
+      "stable": {
+        "denominator": 1568,
+        "numerator": 1366,
+        "rate": 0.8711734693877551
+      }
+    },
+    "strict_context": {
+      "near": {
+        "denominator": 2727,
+        "numerator": 2258,
+        "rate": 0.828016134946828
+      },
+      "near_minus_stable": -0.043157334440927064,
+      "stable": {
+        "denominator": 1568,
+        "numerator": 1366,
+        "rate": 0.8711734693877551
+      }
+    }
+  },
+  "oracle": "independent numeric-only; no HED or production-runner import",
+  "quality": {
+    "headband_ai_artefact_or_missing": 4881,
+    "human_psg_disconnection": 336,
+    "mutually_exclusive_patterns": {
+      "all_three": 9,
+      "headband_ai_only": 4811,
+      "human_and_headband_ai_only": 3,
+      "human_and_psg_ai_only": 171,
+      "human_only": 153,
+      "psg_ai_and_headband_ai_only": 58,
+      "psg_ai_only": 312
+    },
+    "onsets_with_any_released_unavailable_code": 5517,
+    "psg_ai_artefact_or_missing": 550
+  },
+  "reconciliation": {
+    "context_transition_cells_sum_to_valid": true,
+    "contexts_sum_to_valid": true,
+    "each_outcome_context_sum_matches_total": {
+      "any_disagreement": true,
+      "human_headband_ai_disagreement": true,
+      "human_psg_ai_disagreement": true,
+      "psg_ai_headband_ai_disagreement": true
+    },
+    "each_outcome_human_stage_sum_matches_total": {
+      "any_disagreement": true,
+      "human_headband_ai_disagreement": true,
+      "human_psg_ai_disagreement": true,
+      "psg_ai_headband_ai_disagreement": true
+    },
+    "each_stage_context_sum_matches_stage": {
+      "n1": true,
+      "n2": true,
+      "n3": true,
+      "rem": true,
+      "wake": true
+    },
+    "human_stage_strata_sum_to_valid": true,
+    "quality_patterns_sum_to_union": true,
+    "transition_types_sum_to_valid": true
+  },
+  "runtime": {
+    "numpy": "2.5.2",
+    "pandas": "3.0.5",
+    "python": "3.13.7"
+  },
+  "source_code_counts": {
+    "headband_ai:-2": 4881,
+    "headband_ai:0": 18919,
+    "headband_ai:1": 2202,
+    "headband_ai:2": 70543,
+    "headband_ai:3": 4068,
+    "headband_ai:4": 19482,
+    "human_consensus:0": 19137,
+    "human_consensus:1": 4462,
+    "human_consensus:2": 72181,
+    "human_consensus:3": 5225,
+    "human_consensus:4": 18754,
+    "human_consensus:8": 336,
+    "psg_ai:-2": 550,
+    "psg_ai:0": 19543,
+    "psg_ai:1": 3137,
+    "psg_ai:2": 71621,
+    "psg_ai:3": 5178,
+    "psg_ai:4": 20066
+  },
+  "totals": {
+    "any_disagreement": 20240,
+    "exactly_aligned_epochs": 120095,
+    "human_headband_ai_disagreement": 15187,
+    "human_psg_ai_disagreement": 14589,
+    "psg_ai_headband_ai_disagreement": 12385,
+    "union_epochs": 120095,
+    "unmatched_epochs": 0,
+    "valid_three_source_epochs": 114578
+  }
+}
