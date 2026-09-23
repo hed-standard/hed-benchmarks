@@ -1,6 +1,7 @@
 {
   "bootstrap": {
     "bit_generator": "PCG64",
+    "contributing_individuals": 100,
     "individuals": 100,
     "observed_near_minus_stable": 0.2936303484412169,
     "percentile_95_interval_linear": [

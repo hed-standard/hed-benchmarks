@@ -71,7 +71,11 @@ def build_report(document: dict[str, object]) -> str:
             "- Epoch-pooled near-minus-stable rate difference: "
             f"**{100 * uncertainty['observed_difference']:.1f} percentage points** "
             f"(participant-cluster bootstrap 95% interval {100 * interval[0]:.1f} to {100 * interval[1]:.1f} percentage points; "
-            f"{uncertainty['samples_used']:,} resamples)."
+            f"{uncertainty['samples_used']:,}/{uncertainty['samples_requested']:,} usable resamples)."
+        ),
+        (
+            f"- Bootstrap population: {uncertainty['individuals']} individuals; "
+            f"{uncertainty['contributing_individuals']} contribute eligible near or stable epochs."
         ),
         f"- One-sided near context, excluded from the primary comparison: {any_rates['one_sided_near']['denominator']:,} epochs, {any_rates['one_sided_near']['numerator']:,} disagreements.",
         f"- Other unavailable context, excluded from the primary comparison: {any_rates['unavailable']['denominator']:,} epochs, {any_rates['unavailable']['numerator']:,} disagreements.",
@@ -90,6 +94,9 @@ def build_report(document: dict[str, object]) -> str:
         "",
         "The bootstrap resamples individuals with all their nights together, but rates still pool epochs: people with "
         "more eligible epochs contribute more weight. This is not an average of individual rate differences.",
+        "Individuals with no eligible epochs remain in the resampling population. Draws missing either context "
+        "are excluded from the interval. At least two contributing individuals and both pooled contexts are required; "
+        "this minimum does not establish interval reliability in small or sparse cohorts.",
         "",
         "## What HED does here",
         "",

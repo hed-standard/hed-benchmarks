@@ -28,6 +28,8 @@ Both flanks must be observable and all timing steps through the focal epoch must
 
 The pooled contrast is descriptive and unadjusted. Near and stable contexts have different stage compositions, so the report also shows all five human-stage strata; the pooled direction need not hold in each stage. The bootstrap keeps repeated nights together by `pid`, but pools epoch counts rather than averaging participant-level rates.
 
+The resampling population includes all individuals in the cohort, including those with no eligible near or stable epochs. The summary separately counts individuals contributing at least one eligible epoch in either context. At least two contributors and both pooled contexts are required; this is a minimum-support safeguard, not assurance of interval reliability in small or sparse cohorts. Draws missing either context are excluded from the percentile interval, and both requested and usable draw counts are reported. In the reviewed BOAS snapshot, all 100 individuals contribute and all 10,000 draws are usable.
+
 ## Data identity
 
 The default runner verifies metadata byte hashes and the complete event-file manifest against `expected/identity.json`, reviewed at source revision `0225bb258566172fa97a4f75dc2c2689243df2a2` for `doi:10.18112/openneuro.ds005555.v1.1.1` (CC0). A modified file fails before HED processing even if its DOI and license are unchanged. Git-free exports are accepted when their reviewed annotation bytes match. The program records checkout revision separately from verified input identity.
@@ -50,6 +52,8 @@ python use_cases/sleep/real_data/boas/src/boas_case.py \
 python use_cases/sleep/real_data/boas/src/report.py \
   --results-dir /path/to/local/results
 ```
+
+After updating this case, rerun both commands. Older summary files without the contributing-individual count must be regenerated before rendering with the current report script.
 
 The results directory is intentionally outside the repository. It contains:
 

@@ -128,18 +128,25 @@ def cluster_bootstrap(frame: pd.DataFrame) -> dict[str, object]:
         )
         .groupby("individual_id", sort=True)[["near_num", "near_den", "stable_num", "stable_den"]]
         .sum()
+        .reindex(sorted(frame["individual_id"].unique()), fill_value=0)
     )
     values = grouped.to_numpy(dtype=np.int64)
+    contributing = int(np.count_nonzero(values[:, 1] + values[:, 3]))
+    if contributing < 2 or values[:, 1].sum() == 0 or values[:, 3].sum() == 0:
+        raise ValueError("Bootstrap requires at least two contributing individuals and both transition contexts")
     rng = np.random.default_rng(SEED)
     indices = rng.integers(0, len(values), size=(SAMPLES, len(values)))
     pooled = values[indices].sum(axis=1)
     usable = (pooled[:, 1] > 0) & (pooled[:, 3] > 0)
+    if not usable.any():
+        raise ValueError("No bootstrap resample contains both transition contexts")
     differences = pooled[usable, 0] / pooled[usable, 1] - pooled[usable, 2] / pooled[usable, 3]
     observed = values[:, 0].sum() / values[:, 1].sum() - values[:, 2].sum() / values[:, 3].sum()
     low, high = np.quantile(differences, (0.025, 0.975), method="linear")
     return {
         "unit": "sorted pid-prefixed individual_id",
         "individuals": len(grouped),
+        "contributing_individuals": contributing,
         "seed": SEED,
         "bit_generator": type(rng.bit_generator).__name__,
         "samples_requested": SAMPLES,

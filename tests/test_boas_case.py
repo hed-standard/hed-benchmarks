@@ -7,8 +7,10 @@ import importlib.util
 import io
 import json
 import os
+from itertools import product
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import pytest
 
@@ -27,6 +29,128 @@ def _load_module(name: str, path: Path):
 
 boas_case = _load_module("boas_case", SRC_DIR / "boas_case.py")
 boas_report = _load_module("boas_report", SRC_DIR / "report.py")
+boas_numeric = _load_module("boas_numeric", SRC_DIR.parent / "expected/recompute_numeric.py")
+
+
+@pytest.fixture(params=["case", "numeric"])
+def bootstrap(request, monkeypatch):
+    """Exercise each implementation against the same hand-counted contracts."""
+
+    def run(frame, samples):
+        if request.param == "case":
+            return boas_case._cluster_bootstrap(frame, samples=samples)
+        monkeypatch.setattr(boas_numeric, "SAMPLES", samples)
+        result = boas_numeric.cluster_bootstrap(
+            frame.rename(columns={"valid_three_source_stage": "valid", "human_external_context": "strict_context"})
+        )
+        result["observed_difference"] = result.pop("observed_near_minus_stable")
+        result["percentile_95_interval"] = result.pop("percentile_95_interval_linear")
+        return result
+
+    return run
+
+
+@pytest.fixture
+def bootstrap_frame():
+    # A has two distinct nights: near 3/3, stable 1/3 overall. B: near 0/1, stable 2/2.
+    return pd.DataFrame(
+        {
+            "individual_id": ["A"] * 6 + ["B"] * 3,
+            "recording": ["A1"] * 3 + ["A2"] * 3 + ["B1"] * 3,
+            "valid_three_source_stage": [True] * 9,
+            "human_external_context": ["near", "near", "stable", "near", "stable", "stable"]
+            + ["near", "stable", "stable"],
+            "any_disagreement": [True, True, False, True, False, True, False, True, True],
+        }
+    )
+
+
+@pytest.mark.parametrize("empty_individual", [False, True])
+def test_bootstrap_pooled_contrast_and_exact_interval(bootstrap, bootstrap_frame, monkeypatch, empty_individual):
+    frame = bootstrap_frame
+    if empty_individual:
+        frame = pd.concat(
+            [frame, frame.iloc[:1].assign(individual_id="C", recording="C1", valid_three_source_stage=False)],
+            ignore_index=True,
+        )
+    population = 3 if empty_individual else 2
+    samples = population**population
+
+    class ExhaustiveDraws:
+        bit_generator = np.random.PCG64(0)
+
+        def integers(self, low, high, size):
+            assert (low, high, size) == (0, population, (samples, population))
+            return np.array(list(product(range(population), repeat=population)))
+
+    monkeypatch.setattr(np.random, "default_rng", lambda seed: ExhaustiveDraws())
+    result = bootstrap(frame, samples)
+    assert result["individuals"] == population
+    assert result["contributing_individuals"] == 2
+    assert result["samples_requested"] == samples
+    assert result["samples_used"] == samples - int(empty_individual)
+    # Epoch pooling gives 3/4 - 3/5 = 3/20, not the mean-person contrast -1/6.
+    assert result["observed_difference"] == pytest.approx(3 / 20, abs=1e-14, rel=0)
+    # (A,A), (A,B), (B,A), (B,B) yield 2/3, 3/20, 3/20, -1; use linear percentiles.
+    expected_interval = [-1, 2 / 3] if empty_individual else [-731 / 800, 1507 / 2400]
+    assert result["percentile_95_interval"] == pytest.approx(expected_interval, abs=1e-14, rel=0)
+    # Changing recording partitions and row order must not split individual clusters.
+    repartitioned = frame.assign(recording=[f"night-{i}" for i in range(len(frame))]).iloc[::-1]
+    assert bootstrap(repartitioned, samples) == result
+
+
+def test_bootstrap_seeded_whole_cohort(bootstrap, bootstrap_frame):
+    frame = pd.concat(
+        [bootstrap_frame, bootstrap_frame.iloc[:1].assign(individual_id="C", valid_three_source_stage=False)],
+        ignore_index=True,
+    )
+    result = bootstrap(frame, 10_000)
+    assert result["seed"] == 20260908
+    assert result["individuals"] == 3
+    assert result["contributing_individuals"] == 2
+    # PCG64 produces 352 all-C draws: these have no eligible epochs.
+    assert result["samples_requested"] == 10_000
+    assert result["samples_used"] == 9648
+    assert result["observed_difference"] == pytest.approx(3 / 20, abs=1e-14, rel=0)
+    assert result["percentile_95_interval"] == pytest.approx([-1, 2 / 3], abs=1e-14, rel=0)
+
+
+@pytest.mark.parametrize("invalid", ["one_contributor", "all_ineligible", "no_stable"])
+def test_bootstrap_requires_contributing_support(bootstrap, bootstrap_frame, monkeypatch, invalid):
+    frame = bootstrap_frame.copy()
+    if invalid == "one_contributor":
+        frame.loc[frame["individual_id"].eq("B"), "valid_three_source_stage"] = False
+    elif invalid == "all_ineligible":
+        frame["valid_three_source_stage"] = False
+    else:
+        frame["human_external_context"] = "near"
+
+    def forbidden(*args, **kwargs):
+        pytest.fail("Insufficient contributing support must fail before sampling")
+
+    monkeypatch.setattr(np.random, "default_rng", forbidden)
+    with pytest.raises(ValueError, match="two contributing individuals and both transition contexts"):
+        bootstrap(frame, 10)
+
+
+def test_bootstrap_contributors_need_not_supply_both_contexts(bootstrap, bootstrap_frame, monkeypatch):
+    frame = bootstrap_frame.copy()
+    frame["human_external_context"] = np.where(frame["individual_id"].eq("A"), "near", "stable")
+
+    class Draws:
+        bit_generator = np.random.PCG64(0)
+
+        def integers(self, low, high, size):
+            return np.array([[0, 0], [0, 1], [1, 0], [1, 1]])
+
+    monkeypatch.setattr(np.random, "default_rng", lambda seed: Draws())
+    result = bootstrap(frame, 4)
+    assert result["contributing_individuals"] == 2
+    assert result["samples_used"] == 2
+    assert result["observed_difference"] == pytest.approx(0, abs=1e-14)
+    monkeypatch.setattr(Draws, "integers", lambda *args, **kwargs: np.zeros((4, 2), dtype=int))
+    with pytest.raises(ValueError, match="No bootstrap resample contains both transition contexts"):
+        bootstrap(frame, 4)
 
 
 def _write_table(path: Path, human: list[int] | None, algorithm: list[int]) -> None:
@@ -121,6 +245,7 @@ def test_real_case_hed_oracles_outputs_and_report_are_deterministic(tmp_path):
     assert summary["analysis"]["union_onsets"] == 24
     assert summary["analysis"]["unmatched_onsets"] == 0
     assert summary["uncertainty"]["individuals"] == 2
+    assert summary["uncertainty"]["contributing_individuals"] == 2
     for name in ("boas_summary.json", "boas_source_manifest.tsv", "boas_epoch_review.tsv.gz"):
         assert (first / name).read_bytes() == (second / name).read_bytes()
 
@@ -130,6 +255,8 @@ def test_real_case_hed_oracles_outputs_and_report_are_deterministic(tmp_path):
     report_text = first_report.read_text(encoding="utf-8")
     assert "No source is treated as ground truth" in report_text
     assert "both boundaries touching it" in report_text
+    assert "2 individuals; 2 contribute" in report_text
+    assert "100/100 usable resamples" in report_text
 
 
 def test_dataset_identity_is_pinned(tmp_path):
@@ -374,7 +501,7 @@ def test_pinned_boas_full_integration(tmp_path):
     for key, value in analysis["quality"].items():
         assert value == expected["quality"][key]
     assert analysis["context_counts_reconcile"]
-    for key in ("individuals", "samples_requested", "samples_used", "seed"):
+    for key in ("individuals", "contributing_individuals", "samples_requested", "samples_used", "seed"):
         assert summary["uncertainty"][key] == expected["bootstrap"][key]
     assert summary["uncertainty"]["observed_difference"] == pytest.approx(
         expected["bootstrap"]["observed_near_minus_stable"], abs=1e-12, rel=0

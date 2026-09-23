@@ -436,7 +436,12 @@ def _cluster_bootstrap(
     samples: int = BOOTSTRAP_SAMPLES,
     seed: int = BOOTSTRAP_SEED,
 ) -> dict[str, object]:
-    """Bootstrap the near-minus-stable disagreement rate by individual."""
+    """Resample the whole cohort by individual, including zero-contribution clusters.
+
+    At least two individuals must contribute eligible near or stable epochs,
+    and both contexts must exist overall. Draws missing either context are
+    excluded from the percentile interval; samples_used counts usable draws.
+    """
     if samples < 1:
         raise ValueError("Bootstrap samples must be positive")
     valid = frame.loc[frame["valid_three_source_stage"] & frame["human_external_context"].isin(["near", "stable"])]
@@ -451,8 +456,10 @@ def _cluster_bootstrap(
         .sum()
         .reindex(sorted(frame["individual_id"].unique()), fill_value=0)
     )
-    if len(aggregates) < 2 or (aggregates[["near_den", "stable_den"]].sum(axis=0) == 0).any():
-        raise ValueError("Bootstrap requires at least two individuals and both transition contexts")
+    denominators = aggregates[["near_den", "stable_den"]]
+    contributing = int(denominators.sum(axis=1).gt(0).sum())
+    if contributing < 2 or denominators.sum(axis=0).eq(0).any():
+        raise ValueError("Bootstrap requires at least two contributing individuals and both transition contexts")
 
     values = aggregates.to_numpy(dtype=np.int64)
     rng = np.random.default_rng(seed)
@@ -469,6 +476,7 @@ def _cluster_bootstrap(
         "weighting": "Pooled epoch counts; individuals contribute in proportion to eligible epochs.",
         "unit": "individual_id (BOAS pid)",
         "individuals": len(aggregates),
+        "contributing_individuals": contributing,
         "samples_requested": samples,
         "samples_used": int(usable.sum()),
         "seed": seed,
