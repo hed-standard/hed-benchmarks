@@ -24,7 +24,7 @@ uv venv .venv
 uv pip install -e ".[dev,test,docs]"
 ```
 
-Plain `pip install -e ".[dev,test,docs]"` also works. The `hedtools` dependency is currently pinned to the hed-python GitHub main branch because the search benchmarks need modules newer than the released package; this becomes a normal version pin at the next hedtools release.
+Plain `pip install -e ".[dev,test,docs]"` also works. The `hedtools` dependency is pinned to a tested hed-python Git commit in `pyproject.toml` because the search benchmarks need modules newer than the released package; this becomes a normal version pin at the next hedtools release.
 
 ## The case-study model
 

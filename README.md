@@ -34,7 +34,7 @@ uv venv .venv
 uv pip install -e ".[dev,test]"
 ```
 
-`hedtools` is currently installed from the hed-python GitHub main branch because the search benchmarks need modules newer than the released package; this becomes a normal version pin at the next hedtools release.
+`hedtools` is pinned to a tested hed-python Git commit in `pyproject.toml` because the search benchmarks need modules newer than the released package; this becomes a normal version pin at the next hedtools release.
 
 ## Quick start
 

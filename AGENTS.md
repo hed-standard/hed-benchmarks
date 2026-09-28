@@ -37,7 +37,7 @@ CI runs ruff check, ruff format --check, typos, mdformat --check, the pytest sui
 
 ## Rules that are easy to get wrong
 
-- `pyproject.toml` pins `hedtools` to the hed-python GitHub main branch because the search benchmark needs modules newer than the released package. Reinstall after hed-python changes; switch to a normal version pin at the next hedtools release.
+- `pyproject.toml` pins `hedtools` to a tested hed-python Git commit because the search benchmark needs modules newer than the released package. Reinstall after changing that pin; switch to a normal version pin at the next hedtools release.
 - Case-study scripts live in the case's `src/` and import their siblings by module name (for example `from data_generator import DataGenerator`) - do not "fix" this into package imports. They take `--data-dir` and `--results-dir` options and default to the case's `example/` directories, resolved relative to the script's own file.
 - Only the example results are committed (`example/test_data_results/` - the sample run on the small test data). Results for other datasets are written wherever `--results-dir` points and stay out of the repository.
 - Benchmark timings are machine-dependent: never treat a number in an old report as a target, and never compare timings across machines.

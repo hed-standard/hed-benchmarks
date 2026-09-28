@@ -35,10 +35,12 @@ requires-python = ">=3.10"
 dependencies = [
     # The search benchmark needs hed.models.string_search and
     # hed.models.schema_lookup, which are newer than the released hedtools on
-    # PyPI. Switch to a normal version pin at the next hedtools release.
-    "hedtools @ git+https://github.com/hed-standard/hed-python.git@main",
+    # PyPI. Pin the tested commit for reproducible search and BOAS replay.
+    # Switch to a normal version pin at the next hedtools release.
+    "hedtools @ git+https://github.com/hed-standard/hed-python.git@fd19e047dbdb0879deee12eb0c17d11cbad868a8",
     "jsonschema>=4.21.0",
     "matplotlib>=3.8.0",
+    "numpy>=1.26.0",
     "pandas>=2.2.3,<4.0.0",
 ]
 
