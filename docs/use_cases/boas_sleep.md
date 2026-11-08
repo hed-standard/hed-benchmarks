@@ -22,4 +22,6 @@ An optional, source-bound descriptive sensitivity route adds fixed stage-composi
 
 A separate uncertainty route now adds marginal stage-conditioned and fixed-stage-standardized cluster intervals. Its observed-cell and resample-support gates are explicit; it keeps empirical stage weights fixed and withholds unsupported intervals without removing invalid draws. An independent original-code scalar oracle checks the results. This exploratory analysis does not replace the primary interval or establish a physiological transition effect.
 
+The executable manual-N1 review scenario runs an actual HED query, then selects valid human/PSG-AI disagreements in the existing external-near context. Headband availability does not gate this pair-specific task. It returns an aggregate selection funnel and a separate private recording/onset table, with exact original-code key checks. It does not read EEG or measure researcher time saved.
+
 See the [BOAS README](https://github.com/hed-standard/hed-benchmarks/blob/main/use_cases/sleep/real_data/boas/README.md) for the complete data contract, metadata-only download, commands, outputs, and interpretation boundary. The short report contains aggregate findings; the detailed review table stays local and lets you find a recording and onset for follow-up inspection.

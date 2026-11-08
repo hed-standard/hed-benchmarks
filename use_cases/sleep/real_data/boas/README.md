@@ -180,3 +180,37 @@ Each required observed stage/context cell needs at least two contributing indivi
 On the pinned full dataset, all six contrasts have 10,000 usable draws. The fixed-stage-standardized difference is 20.57 pp, with marginal interval [19.07, 22.13] pp. The N1-specific difference is -4.32 pp, with interval [-6.77, -1.86] pp. This is why the pooled direction must not be generalized to every stage. These are descriptive annotation-stream contrasts, not physiological transition effects or scorer accuracy, and the intervals are not simultaneous family-wise intervals.
 
 The independent uncertainty oracle reads original numeric source labels and reconstructs context and individual-level cell counts without HED, pandas or producer helpers. It shares only the prescribed NumPy PCG64 draw generator; aggregation and linear percentiles use scalar Python. Real-data tests compare all interval leaves at absolute tolerance 1e-12 (counts and support states exact), repeat the producer and preserve baseline bytes. This new fail-closed support policy is separate from the older primary interval's draw-exclusion policy.
+
+## A researcher task: locate manual N1 disagreements
+
+Question: which manually scored N1 epochs disagree with PSG-AI in external near-transition context, and where can I inspect them?
+
+```text
+uv run --no-sync python use_cases/sleep/real_data/boas/src/research_scenario.py --data-root ../boas-data --primary-results ../boas-results --results-dir ../boas-n1-review
+```
+
+The runner executes this HED Basic query separately on each recording, using captured, checksum-bound source and mapping bytes:
+
+```text
+(Data-feature, (Human-agent), Sleep-stage-N1)
+```
+
+Original `stage_hum == 1` masks check the retrieval. Python then requires a valid PSG-AI stage, applies the existing focal-label-excluded external-near context, and selects differing labels. A missing or unavailable headband label does not exclude a valid human/PSG-AI pair. This population is intentionally different from the complete-triplet population used for the interval analysis.
+
+Three local files are written into a fresh private directory:
+
+- `scenario_report.md`: short aggregate funnel explaining each selection step;
+- `scenario_summary.json`: counts, exact query and consumed-byte provenance; and
+- `manual_n1_psg_ai_near.tsv.gz`: recording, onset (seconds), duration and original/normalized human/PSG-AI labels, **keep private**.
+
+For a local lookup:
+
+```python
+import pandas as pd
+
+selected = pd.read_csv("../boas-n1-review/manual_n1_psg_ai_near.tsv.gz", sep="\t")
+first = selected.loc[:, ["recording", "onset", "duration"]].head(1)
+print(first.to_string(index=False))
+```
+
+Use the recording and onset to locate the corresponding PSG interval if you separately obtain the signal. The scenario does not read EEG or decide which annotation is correct. Exact sorted recording/onset/duration keys are checked against a separate original-code enumeration, not just a matched-row count. The exported table omits `individual_id`, but remains recording-linked data. No researcher usability or time-saving claim follows from this executable check.
