@@ -64,12 +64,24 @@ The results directory is intentionally outside the repository. It contains:
 
 The detailed review table stays local by default. Sharing it is a separate decision: it reproduces participant-level annotation traces from the CC0 source, whereas the short report contains only aggregate findings.
 
+## Find manual N1 epochs with HED
+
+This small lookup runs `(Data-feature, (Human-agent), Sleep-stage-N1)` on each PSG annotation table and verifies every matched row against the original manual code `1`. It reuses the pinned full metadata/event snapshot above; headband files are checked for dataset identity but are not queried. No primary analysis output is needed.
+
+```text
+uv run --no-sync python use_cases/sleep/real_data/boas/src/find_manual_n1.py --data-root ../boas-data --results-dir ../boas-n1
+```
+
+Use a non-existing output directory in an existing private parent. `manual_n1.tsv` contains recording, onset in seconds, duration and the original manual label; keep this recording-linked table local. `manual_n1_summary.json` contains only query counts and source/mapping hashes. The pinned snapshot has 4,462 manual N1 epochs.
+
+The lookup does not inspect EEG, compare scorers, select transitions or estimate uncertainty. Use the recording and onset for later signal inspection. POSIX files use owner-only permissions; Windows users need a restricted folder ACL. A failed write may leave private partial files, not a completed result.
+
 ## Real-data acceptance gate
 
 Ordinary CI runs small generated fixtures and does not download BOAS. Before a release or PR of changes to this case, maintainers must explicitly run the full-data gate against a local metadata checkout:
 
 ```text
-HED_BENCHMARK_BOAS_ROOT=/path/to/ds005555 python -m pytest -q tests/test_boas_case.py
+HED_BENCHMARK_BOAS_ROOT=/path/to/ds005555 python -m pytest -q tests/test_boas_case.py tests/test_boas_n1_lookup.py
 ```
 
 This gate compares the complete analysis, query counts, reviewed identity, and seeded uncertainty with the numeric-only expected results under `expected/`. The reference calculation is independent of HED retrieval and the case runner. Record this replay alongside ordinary CI; a skipped integration test alone is not acceptance of the real-data case.
