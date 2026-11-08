@@ -18,4 +18,6 @@ Benchmark-provided sidecars map the released numeric codes to stage meaning and 
 
 The primary transition definition requires both observable flanks and excludes the focal epoch label. One-sided and unavailable contexts are reported separately. The report shows stage-stratified results alongside the unadjusted epoch-pooled comparison and uses participant-cluster resampling for uncertainty. The related annotation sources are not treated as ground truth. Raw EEG is not required.
 
+An optional, source-bound descriptive sensitivity route adds fixed stage-composition contrasts, source/context availability, available-pair populations, and a clearly labeled focal-touching transition definition. It keeps the primary estimate and its uncertainty unchanged. The new point estimates are independently checked from original numeric labels and do not introduce new confidence intervals.
+
 See the [BOAS README](https://github.com/hed-standard/hed-benchmarks/blob/main/use_cases/sleep/real_data/boas/README.md) for the complete data contract, metadata-only download, commands, outputs, and interpretation boundary. The short report contains aggregate findings; the detailed review table stays local and lets you find a recording and onset for follow-up inspection.

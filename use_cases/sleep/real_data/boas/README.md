@@ -140,3 +140,24 @@ This gate compares the complete analysis, query counts, reviewed identity, and s
 ## Interpretation boundary
 
 This case demonstrates semantic retrieval and a reproducible downstream comparison. It does not establish scorer accuracy, validate either AI system, inspect signal quality, or support a causal claim about why transitions and disagreements co-occur.
+
+## Descriptive sensitivities
+
+The optional sensitivity runner keeps the primary analysis unchanged. It verifies the pinned source bytes and reconciles every required field in the primary review table before calculating:
+
+- near/stable contrasts within each human-consensus stage and under the fixed observed combined near+stable stage composition;
+- unavailable and missing labels by source/context, including comparisons using two available sources when the third is unavailable; and
+- an alternative context using the two boundaries touching the focal epoch, with exhaustive cross-tabs against the primary external context.
+
+These are epoch-weighted descriptive point estimates, not new confidence intervals. A positive-weight stage without both contexts makes the standardized estimate unavailable rather than triggering imputation or renormalization. The touching-boundary sensitivity uses the focal human label, is outcome-coupled, and must not replace the primary definition. Complete triplets and all-available pairs are different observational populations.
+
+Use a fresh sibling output directory. Neither runner overwrites existing sensitivity/oracle outputs, including file aliases. Keep the primary review table and original data unchanged:
+
+```text
+uv run --no-sync python use_cases/sleep/real_data/boas/src/sensitivity_case.py --data-root ../boas-data --primary-results ../boas-results --results-dir ../boas-sensitivity
+uv run --no-sync python use_cases/sleep/real_data/boas/expected/recompute_sensitivity_numeric.py --data-root ../boas-data --output ../boas-sensitivity-numeric.json
+```
+
+`boas-sensitivity` contains `boas_sensitivity.json` and `boas_sensitivity.md`, both aggregate-only. The JSON retains every context, numerator, denominator, fixed weight and unsupported cell. The Markdown report uses percentage points for differences and percentages for stage weights. Input hashes bind consumed provenance; they are not proof that HED executed.
+
+The numeric oracle independently reads the original codes using Python's standard library, without importing HED or either case implementation. The full-data acceptance command above now reruns HED, compares every sensitivity count and point estimate with this oracle, checks deterministic regeneration, and verifies that primary artifacts remain unchanged. Small generated fixtures also cover missing source rows that are not present in the pinned real snapshot.
