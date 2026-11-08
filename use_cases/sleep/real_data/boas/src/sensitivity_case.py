@@ -12,6 +12,7 @@ from pathlib import Path
 import boas_case as primary
 import numpy as np
 import pandas as pd
+from case_io import validate_destination, write_outputs
 from sensitivity_analysis import (
     CONTEXTS,
     STAGES,
@@ -306,13 +307,7 @@ def build_sensitivity(
     Returns:
         Aggregate descriptive sensitivity result and input provenance.
     """
-    output = results_dir.resolve()
-    for input_dir in (data_root.resolve(), primary_results.resolve()):
-        if output.is_relative_to(input_dir) or input_dir.is_relative_to(output):
-            raise ValueError("Sensitivity output must be separate from data and primary results")
-    destinations = [results_dir / name for name in ("boas_sensitivity.json", "boas_sensitivity.md")]
-    if any(path.exists() or path.is_symlink() for path in destinations):
-        raise ValueError("A sensitivity output already exists; use a fresh output directory")
+    validate_destination(results_dir, (data_root, primary_results))
     frame, provenance = verify_inputs(data_root, primary_results, expected_identity=expected_identity)
     result = {
         "case_id": "boas_descriptive_sensitivity",
@@ -323,14 +318,11 @@ def build_sensitivity(
         "available_pairs": available_pair_comparisons(frame),
         "transition_sensitivity": transition_sensitivity(frame),
     }
-    results_dir.mkdir(parents=True, exist_ok=True)
-    contents = (json.dumps(result, indent=2, sort_keys=True, allow_nan=False) + "\n", _report(result))
-    for path, content in zip(destinations, contents, strict=True):
-        try:
-            with path.open("x", encoding="utf-8", newline="\n") as stream:
-                stream.write(content)
-        except FileExistsError:
-            raise ValueError("A sensitivity output already exists; use a fresh output directory") from None
+    contents = {
+        "boas_sensitivity.json": json.dumps(result, indent=2, sort_keys=True, allow_nan=False) + "\n",
+        "boas_sensitivity.md": _report(result),
+    }
+    write_outputs(results_dir, contents)
     return result
 
 
@@ -340,7 +332,10 @@ def main() -> None:
     parser.add_argument("--primary-results", required=True, type=Path)
     parser.add_argument("--results-dir", required=True, type=Path)
     args = parser.parse_args()
-    build_sensitivity(args.data_root, args.primary_results, args.results_dir)
+    try:
+        build_sensitivity(args.data_root, args.primary_results, args.results_dir)
+    except Exception:
+        parser.exit(2, "Cannot complete BOAS sensitivities; verify inputs and use a fresh private output directory.\n")
 
 
 if __name__ == "__main__":

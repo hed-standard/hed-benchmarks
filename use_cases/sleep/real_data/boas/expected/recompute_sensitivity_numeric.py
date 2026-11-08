@@ -285,17 +285,17 @@ def main() -> None:
     parser.add_argument("--data-root", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
-    if args.output.resolve().is_relative_to(args.data_root.resolve()):
-        raise ValueError("Oracle output must be outside the source dataset")
-    if args.output.exists() or args.output.is_symlink():
-        raise ValueError("Oracle output already exists; use a fresh filename")
-    result = build(args.data_root)
-    args.output.parent.mkdir(parents=True, exist_ok=True)
     try:
+        if args.output.resolve().is_relative_to(args.data_root.resolve()):
+            raise ValueError("Oracle output must be outside the source dataset")
+        if args.output.exists() or args.output.is_symlink():
+            raise ValueError("Oracle output already exists; use a fresh filename")
+        result = build(args.data_root)
+        args.output.parent.mkdir(parents=True, exist_ok=True)
         with args.output.open("x", encoding="utf-8", newline="\n") as stream:
             stream.write(json.dumps(result, indent=2, sort_keys=True, allow_nan=False) + "\n")
-    except FileExistsError:
-        raise ValueError("Oracle output already exists; use a fresh filename") from None
+    except Exception:
+        parser.exit(2, "Cannot complete the BOAS sensitivity reference; verify inputs and use a fresh output file.\n")
 
 
 if __name__ == "__main__":

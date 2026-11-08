@@ -24,4 +24,6 @@ A separate uncertainty route now adds marginal stage-conditioned and fixed-stage
 
 The executable manual-N1 review scenario runs an actual HED query, then selects valid human/PSG-AI disagreements in the existing external-near context. Headband availability does not gate this pair-specific task. It returns an aggregate selection funnel and a separate private recording/onset table, with exact original-code key checks. It does not read EEG or measure researcher time saved.
 
+The sensitivity route requires a new output directory in an existing private parent. It uses exclusive writes and owner-only POSIX permissions, and its command-line errors do not print local paths. Windows users must use a restricted folder ACL. A late write failure can leave private partial files and is not a completed run.
+
 See the [BOAS README](https://github.com/hed-standard/hed-benchmarks/blob/main/use_cases/sleep/real_data/boas/README.md) for the complete data contract, metadata-only download, commands, outputs, and interpretation boundary. The short report contains aggregate findings; the detailed review table stays local and lets you find a recording and onset for follow-up inspection.

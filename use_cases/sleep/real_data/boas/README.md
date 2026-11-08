@@ -151,7 +151,7 @@ The optional sensitivity runner keeps the primary analysis unchanged. It verifie
 
 These are epoch-weighted descriptive point estimates, not new confidence intervals. A positive-weight stage without both contexts makes the standardized estimate unavailable rather than triggering imputation or renormalization. The touching-boundary sensitivity uses the focal human label, is outcome-coupled, and must not replace the primary definition. Complete triplets and all-available pairs are different observational populations.
 
-Use a fresh sibling output directory. Neither runner overwrites existing sensitivity/oracle outputs, including file aliases. Keep the primary review table and original data unchanged:
+Use a non-existing sensitivity output directory in an existing private parent. Existing directories, even empty ones, are rejected. The sensitivity runner creates its directory and files with owner-only POSIX permissions; use a restricted folder ACL on Windows. Neither runner overwrites existing sensitivity/oracle outputs, including file aliases. Keep the primary review table and original data unchanged:
 
 ```text
 uv run --no-sync python use_cases/sleep/real_data/boas/src/sensitivity_case.py --data-root ../boas-data --primary-results ../boas-results --results-dir ../boas-sensitivity
@@ -159,6 +159,8 @@ uv run --no-sync python use_cases/sleep/real_data/boas/expected/recompute_sensit
 ```
 
 `boas-sensitivity` contains `boas_sensitivity.json` and `boas_sensitivity.md`, both aggregate-only. The JSON retains every context, numerator, denominator, fixed weight and unsupported cell. The Markdown report uses percentage points for differences and percentages for stage weights. Input hashes bind consumed provenance; they are not proof that HED executed.
+
+Command-line failures report a generic error without local paths or raw row values. A late write failure can leave private partial sensitivity files; it is not a completed run or an atomic multi-file update. Resolve the error and choose another fresh destination. The numeric reference is aggregate-only and follows the private shell/folder setup above.
 
 The numeric oracle independently reads the original codes using Python's standard library, without importing HED or either case implementation. The full-data acceptance command above now reruns HED, compares every sensitivity count and point estimate with this oracle, checks deterministic regeneration, and verifies that primary artifacts remain unchanged. Small generated fixtures also cover missing source rows that are not present in the pinned real snapshot.
 

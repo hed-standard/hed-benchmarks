@@ -115,8 +115,9 @@ def test_numeric_oracle_cli_cannot_overwrite_source_or_existing_file(tmp_path, m
         output.write_bytes(b"keep-existing")
     output_before = output.read_bytes()
     monkeypatch.setattr(sys, "argv", ["oracle", "--data-root", str(data), "--output", str(output)])
-    with pytest.raises(ValueError):
+    with pytest.raises(SystemExit) as caught:
         oracle.main()
+    assert caught.value.code == 2
     assert source.read_bytes() == source_before
     assert output.read_bytes() == output_before
 
