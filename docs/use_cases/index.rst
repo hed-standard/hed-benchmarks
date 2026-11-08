@@ -10,6 +10,6 @@ when only its intent is settled.
 
    Synthetic search (working) <synthetic_search>
    Sleep annotation source search (working) <sleep>
-   BOAS real-data sleep annotation case (working locally) <boas_sleep>
+   BOAS real-data sleep annotation case (working) <boas_sleep>
    Language scoring (planned) <lang>
    Epilepsy scoring (planned) <score>

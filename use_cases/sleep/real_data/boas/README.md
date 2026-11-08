@@ -36,21 +36,37 @@ The default runner verifies metadata byte hashes and the complete event-file man
 
 Each table is read once into immutable bytes. Pandas, HED, and the manifest use those same bytes even if a file on disk later changes. Mapping sidecar hashes are also recorded. There are 128 recording rows and 100 individuals identified by the author-confirmed `pid` field.
 
-The released README describes 108 unique individuals, but `participants.tsv` contains 100 unique non-empty `pid` values. The dataset author clarified that `pid` identifies individuals and that 108 is the largest identifier rather than the participant count. The runner therefore records both the 128 recording rows and the reproducible count of 100 unique `pid` values.
+At the reviewed source revision, the dataset README describes 108 unique individuals, but `participants.tsv` contains 100 unique non-empty `pid` values. The dataset author clarified that `pid` identifies individuals and that 108 is the largest identifier rather than the participant count. The runner therefore records both the 128 recording rows and the reproducible count of 100 unique `pid` values. This discrepancy refers to that pinned revision, not necessarily the current dataset README.
 
-Only the event tables are needed. Raw EEG is not downloaded or analyzed.
+Inputs are the event tables, `participants.tsv` and `dataset_description.json`. Raw EEG is not required or analyzed.
+
+## Obtain the event tables
+
+First install the project environment using the [repository instructions](../../../../README.md). Run all commands from the repository root. Data and results below go into sibling directories, not into the repository.
+
+Before downloading or running, choose fresh data/results directories in a private local parent, not a shared or cloud-synced folder. If you reuse an existing results directory, verify and restrict its access first: changing default permissions does not protect existing files. On macOS/Linux, set private default permissions in the same shell before creating the directories:
+
+```bash
+umask 077
+```
+
+On Windows, use a folder whose access permissions are restricted to your account. `umask` and POSIX mode bits do not set Windows access-control lists. Adjust the sibling paths below if their parent is not private.
+
+The following sparse checkout selects BOAS v1.1.1 dataset metadata, participant linkage and event tables in the working tree without checking out EDF recordings. Git's internal metadata and objects may also retain dataset paths or annex pointer blobs; this is not a sanitized release copy. No EDF payload is required or analyzed.
+
+```text
+git clone --filter=blob:none --sparse --branch 1.1.1 https://github.com/OpenNeuroDatasets/ds005555.git ../boas-data
+git -C ../boas-data sparse-checkout set --no-cone "/dataset_description.json" "/participants.tsv" "/sub-*/eeg/*_events.tsv"
+git -C ../boas-data rev-parse HEAD
+```
+
+The last command should print `0225bb258566172fa97a4f75dc2c2689243df2a2`. The runner also verifies the exact metadata bytes and all 256 event files, so a wrong version or incomplete download fails before analysis. A Git-free export works only if it contains the same reviewed files and bytes. Do not disable the identity check to accept a different snapshot.
 
 ## Run
 
-From the repository root:
-
 ```text
-python use_cases/sleep/real_data/boas/src/boas_case.py \
-  --data-root /path/to/ds005555 \
-  --results-dir /path/to/local/results
-
-python use_cases/sleep/real_data/boas/src/report.py \
-  --results-dir /path/to/local/results
+uv run --no-sync python use_cases/sleep/real_data/boas/src/boas_case.py --data-root ../boas-data --results-dir ../boas-results
+uv run --no-sync python use_cases/sleep/real_data/boas/src/report.py --results-dir ../boas-results
 ```
 
 After updating this case, rerun both commands. Older summary files without the contributing-individual count must be regenerated before rendering with the current report script.
@@ -62,14 +78,61 @@ The results directory is intentionally outside the repository. It contains:
 - `boas_source_manifest.tsv` - relative input paths, row counts, and SHA-256 hashes; and
 - `boas_report.md` - short human-readable report.
 
-The detailed review table stays local by default. Sharing it is a separate decision: it reproduces participant-level annotation traces from the CC0 source, whereas the short report contains only aggregate findings.
+The detailed review table stays local by default. Sharing it is a separate decision: it reproduces participant-level annotation traces from the CC0 source, whereas the short report contains only aggregate findings. The source manifest also contains recording-level filenames; it is not an aggregate-only output.
+
+## Find a recording and onset
+
+Open `../boas-results/boas_report.md` for the aggregate results. To locate a specific disagreement, start a Python session with `uv run --no-sync python` and paste:
+
+```python
+import pandas as pd
+
+review = pd.read_csv("../boas-results/boas_epoch_review.tsv.gz", sep="\t")
+columns = [
+    "recording",
+    "onset",
+    "duration",
+    "human_original",
+    "psg_ai_original",
+    "headband_ai_original",
+    "human_stage",
+    "psg_ai_stage",
+    "headband_ai_stage",
+    "any_disagreement",
+    "human_external_context",
+]
+first = review.loc[review["any_disagreement"], columns].head(1)
+print(first.to_string(index=False))
+
+recording = first.iloc[0]["recording"]
+onset = first.iloc[0]["onset"]
+nearby = review.loc[
+    review["recording"].eq(recording) & review["onset"].between(onset - 60, onset + 60),
+    columns,
+]
+print(nearby.to_string(index=False))
+```
+
+`recording` identifies the released recording; `onset` is seconds from the start of that recording and `duration` is the annotation interval. The original-code columns let you check the semantic stage names against the released labels. `human_external_context` uses the flanking-pair definition above, not a conventional immediately adjacent transition.
+
+This lookup does not inspect EEG or decide which label is correct. It gives you the recording and time interval to inspect later if you separately obtain the signals. Keep these rows local; the example does not print `individual_id`, but recording-level labels are still participant-linked data.
 
 ## Real-data acceptance gate
 
 Ordinary CI runs small generated fixtures and does not download BOAS. Before a release or PR of changes to this case, maintainers must explicitly run the full-data gate against a local metadata checkout:
 
-```text
-HED_BENCHMARK_BOAS_ROOT=/path/to/ds005555 python -m pytest -q tests/test_boas_case.py
+On macOS/Linux:
+
+```bash
+HED_BENCHMARK_BOAS_ROOT=../boas-data uv run --no-sync python -m pytest -q
+```
+
+In Windows PowerShell:
+
+```powershell
+$env:HED_BENCHMARK_BOAS_ROOT = "../boas-data"
+uv run --no-sync python -m pytest -q
+Remove-Item Env:HED_BENCHMARK_BOAS_ROOT
 ```
 
 This gate compares the complete analysis, query counts, reviewed identity, and seeded uncertainty with the numeric-only expected results under `expected/`. The reference calculation is independent of HED retrieval and the case runner. Record this replay alongside ordinary CI; a skipped integration test alone is not acceptance of the real-data case.
