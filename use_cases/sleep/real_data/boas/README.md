@@ -161,3 +161,22 @@ uv run --no-sync python use_cases/sleep/real_data/boas/expected/recompute_sensit
 `boas-sensitivity` contains `boas_sensitivity.json` and `boas_sensitivity.md`, both aggregate-only. The JSON retains every context, numerator, denominator, fixed weight and unsupported cell. The Markdown report uses percentage points for differences and percentages for stage weights. Input hashes bind consumed provenance; they are not proof that HED executed.
 
 The numeric oracle independently reads the original codes using Python's standard library, without importing HED or either case implementation. The full-data acceptance command above now reruns HED, compares every sensitivity count and point estimate with this oracle, checks deterministic regeneration, and verifies that primary artifacts remain unchanged. Small generated fixtures also cover missing source rows that are not present in the pinned real snapshot.
+
+## Stage-conditioned uncertainty
+
+A separate runner adds exploratory marginal 95% individual-cluster percentile intervals for the five human-stage-specific contrasts and the fixed-stage-standardized contrast. It consumes the verified primary and descriptive outputs, leaving both unchanged:
+
+```text
+uv run --no-sync python use_cases/sleep/real_data/boas/src/uncertainty_case.py --data-root ../boas-data --primary-results ../boas-results --descriptive-results ../boas-sensitivity --results-dir ../boas-uncertainty
+uv run --no-sync python use_cases/sleep/real_data/boas/expected/recompute_uncertainty_numeric.py --data-root ../boas-data --output ../boas-uncertainty-reference.json
+```
+
+The destination must not exist and must be outside all input directories, in an existing private parent. The two aggregate outputs are `boas_uncertainty.json` and `boas_uncertainty.md`. The JSON records observed cell numerators/denominators, contributing individuals, fixed weights, requested/usable/invalid draws, reasons and software provenance. POSIX outputs are private by default; use a restricted folder ACL on Windows.
+
+The reviewed sampling plan is 10,000 shared PCG64 draws with seed 20261104. Every cohort individual is resampled, including zero-contribution individuals, and repeated recordings stay together. Stage weights come from the observed complete-triplet near+stable population and remain fixed in every draw. The intervals are conditional on released human-consensus focal-stage labels and this target composition; they do not include uncertainty in estimating the target weights.
+
+Each required observed stage/context cell needs at least two contributing individuals. If any requested draw lacks a required denominator, that contrast's interval is withheld rather than dropping draws, imputing or renormalizing. Other fully supported contrasts remain available. These are minimum computational-support safeguards, not proof of reliable precision. Do not change the seed, reduce the draw count or retry to obtain an available interval. Nondefault seed/draw settings are labeled QA-only. Sampling parameters accept integers, excluding booleans: 2..100000 draws, seed 0..2\*\*64-1 and batch size 1..1024; batching does not change the resample sequence.
+
+On the pinned full dataset, all six contrasts have 10,000 usable draws. The fixed-stage-standardized difference is 20.57 pp, with marginal interval [19.07, 22.13] pp. The N1-specific difference is -4.32 pp, with interval [-6.77, -1.86] pp. This is why the pooled direction must not be generalized to every stage. These are descriptive annotation-stream contrasts, not physiological transition effects or scorer accuracy, and the intervals are not simultaneous family-wise intervals.
+
+The independent uncertainty oracle reads original numeric source labels and reconstructs context and individual-level cell counts without HED, pandas or producer helpers. It shares only the prescribed NumPy PCG64 draw generator; aggregation and linear percentiles use scalar Python. Real-data tests compare all interval leaves at absolute tolerance 1e-12 (counts and support states exact), repeat the producer and preserve baseline bytes. This new fail-closed support policy is separate from the older primary interval's draw-exclusion policy.

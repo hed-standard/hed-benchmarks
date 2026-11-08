@@ -24,7 +24,7 @@ Benchmark case studies and shared benchmark tooling for HED (Hierarchical Event 
 | language scoring (lang)                                          | planned | Language scoring benchmarks                                                             |
 | epilepsy scoring (score)                                         | planned | Epilepsy scoring benchmarks based on SCORE                                              |
 
-Each case study directory has its own README and the same committed layout: `src/` (scripts), `example/` with a small vendored test dataset (`test_data/`) and the results of running the benchmark on it (`test_data_results/` with `output/`, `figures/`, `reports/`), and `json_specifications/` (the case's standardized JSON specs, placeholder until the format lands). Synthetic scripts take `--data-dir` and `--results-dir`. The primary BOAS runner instead takes `--data-root` and writes four files directly to `--results-dir`. The optional BOAS sensitivity route produces separate aggregate outputs. Real recording-linked results stay outside the public tree.
+Each case study directory has its own README and the same committed layout: `src/` (scripts), `example/` with a small vendored test dataset (`test_data/`) and the results of running the benchmark on it (`test_data_results/` with `output/`, `figures/`, `reports/`), and `json_specifications/` (the case's standardized JSON specs, placeholder until the format lands). Synthetic scripts take `--data-dir` and `--results-dir`. The primary BOAS runner instead takes `--data-root` and writes four files directly to `--results-dir`. Optional BOAS sensitivity and uncertainty routes produce separate aggregate outputs. Real recording-linked results stay outside the public tree.
 
 ## Installation
 

@@ -20,4 +20,6 @@ The primary transition definition requires both observable flanks and excludes t
 
 An optional, source-bound descriptive sensitivity route adds fixed stage-composition contrasts, source/context availability, available-pair populations, and a clearly labeled focal-touching transition definition. It keeps the primary estimate and its uncertainty unchanged. The new point estimates are independently checked from original numeric labels and do not introduce new confidence intervals.
 
+A separate uncertainty route now adds marginal stage-conditioned and fixed-stage-standardized cluster intervals. Its observed-cell and resample-support gates are explicit; it keeps empirical stage weights fixed and withholds unsupported intervals without removing invalid draws. An independent original-code scalar oracle checks the results. This exploratory analysis does not replace the primary interval or establish a physiological transition effect.
+
 See the [BOAS README](https://github.com/hed-standard/hed-benchmarks/blob/main/use_cases/sleep/real_data/boas/README.md) for the complete data contract, metadata-only download, commands, outputs, and interpretation boundary. The short report contains aggregate findings; the detailed review table stays local and lets you find a recording and onset for follow-up inspection.
