@@ -82,8 +82,13 @@ def run_lookup(data_root: Path, results_dir: Path, *, expected_identity: dict | 
     return summary
 
 
+class _ArgumentParser(argparse.ArgumentParser):
+    def error(self, message):
+        self.exit(2, "Cannot parse BOAS N1 arguments; use --help for usage.\n")
+
+
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = _ArgumentParser(description=__doc__)
     parser.add_argument("--data-root", type=Path, required=True)
     parser.add_argument("--results-dir", type=Path, required=True)
     args = parser.parse_args()

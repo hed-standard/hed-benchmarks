@@ -105,23 +105,34 @@ def test_outputs_repeat_exactly_and_remain_private(source, lookup, tmp_path):
         assert all(p.stat().st_mode & 0o077 == 0 for p in (tmp_path / "one").iterdir())
 
 
-def test_cli_failure_does_not_print_local_paths(lookup, tmp_path):
+@pytest.mark.parametrize("failure", ["execution", "extra", "unknown", "missing"])
+def test_cli_failure_does_not_print_local_paths(lookup, tmp_path, failure):
+    arguments = ["--data-root", str(tmp_path / "missing"), "--results-dir", str(tmp_path / "out")]
+    if failure == "extra":
+        arguments.append(str(tmp_path / "private-extra"))
+    elif failure == "unknown":
+        arguments.extend(["--unknown", str(tmp_path / "private-value")])
+    elif failure == "missing":
+        arguments.pop()
     result = subprocess.run(
-        [
-            sys.executable,
-            "-B",
-            str(SRC_DIR / "find_manual_n1.py"),
-            "--data-root",
-            str(tmp_path / "missing"),
-            "--results-dir",
-            str(tmp_path / "out"),
-        ],
+        [sys.executable, "-B", str(SRC_DIR / "find_manual_n1.py"), *arguments],
         capture_output=True,
         text=True,
         check=False,
     )
-    assert result.returncode == 2 and "Cannot complete" in result.stderr
+    assert result.returncode == 2 and result.stderr.strip()
     assert "Traceback" not in result.stderr and str(tmp_path) not in result.stdout + result.stderr
+
+
+def test_cli_help_remains_available_without_input_data(lookup):
+    result = subprocess.run(
+        [sys.executable, "-B", str(SRC_DIR / "find_manual_n1.py"), "--help"],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0 and result.stderr == ""
+    assert "--data-root" in result.stdout and "--results-dir" in result.stdout
 
 
 @pytest.mark.skipif("HED_BENCHMARK_BOAS_ROOT" not in os.environ, reason="Pinned BOAS metadata not configured")
